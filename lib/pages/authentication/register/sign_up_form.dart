@@ -8,11 +8,17 @@ import 'package:smile_engage/components/CustomSuffixIcon.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/size_config.dart';
 import 'package:smile_engage/pages/authentication/components/form_error.dart';
+import 'package:smile_engage/pages/authentication/register/register_page.dart';
+import 'package:smile_engage/pages/models/radio_group.dart';
+import 'package:smile_engage/pages/models/register_model.dart';
 import 'package:smile_engage/pages/ui/default_button.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 
 
 class SignUpForm extends StatefulWidget {
+  final int isAdmin;
+  SignUpForm(this.isAdmin);
+
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -34,9 +40,11 @@ class _SignUpFormState extends State<SignUpForm> {
   final TextEditingController confirmPasswordController =
   new TextEditingController();
   final List<String?> errors = [];
+  bool isAdmin=false;
 
   String _errorMessage = '';
-
+  //
+  late RegisterModel userModel;
   void addError({String? error}) {
     if (!errors.contains(error))
       setState(() {
@@ -53,17 +61,21 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+
+    isAdmin=widget.isAdmin==0?true:false;
+
     return Form(
       key: _formKey,
       child: Column(
         children: [
+         // buildRadioGroup(),
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(20)),
           buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(20)),
           buildConformPassFormField(),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(40)),
+          SizedBox(height: getProportionateScreenHeight(25)),
           DefaultButton(
             text: "Continue",
             press: () async {
@@ -89,6 +101,8 @@ class _SignUpFormState extends State<SignUpForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
+        }else if (value.length >= 8) {
+          removeError(error: kShortPassError);
         } else if (value.isNotEmpty && password == conform_password) {
           removeError(error: kMatchPassError);
         }
@@ -98,7 +112,13 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if ((password != value)) {
+        }else if (value.length < 8) {
+          addError(error: kShortPassError);
+          return "";
+        }else if (value.length >= 8) {
+          removeError(error: kShortPassError);
+        }
+        if ((password != value)) {
           addError(error: kMatchPassError);
           return "";
         }
@@ -186,25 +206,44 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   void _register() async {
-    _firebaseAuth
-        .createUserWithEmailAndPassword(
-        email: emailTextEditController.text,
-        password: passwordController.text)
-        .then((user) {
-      Navigator.pushNamed(context, Routes.complete_profile_screen);
-    }).catchError((onError) {
-      processError(onError);
-    });
+   // final routeArgs =
+   // ModalRoute.of(context).settings.arguments as Map<String, int>;
+
+    userModel=RegisterModel(email: emailTextEditController.text, password: passwordController.text, isAdmin: isAdmin);
+
+      Navigator.pushNamed(context, Routes.complete_profile_screen,arguments: userModel);
+
   }
 
-  void processError(final PlatformException error) {
-    setState(() {
-      //_errorMessage = error.message!;
-      errors.add(error.message);
-    });
-  }
+  // void processError(final PlatformException error) {
+  //   setState(() {
+  //     //_errorMessage = error.message!;
+  //     errors.add(error.message);
+  //   });
+  // }
   @override
   void dispose(){
     super.dispose();
   }
+
+  // buildRadioGroup() {
+  //   return Expanded(
+  //       child: Container(
+  //         height: 350.0,
+  //         child: Column(
+  //           children:
+  //           radioList.map((data) => RadioListTile(
+  //             title: Text("${data.value}"),
+  //             groupValue: 1,
+  //             value: data.id,
+  //             onChanged: (val) {
+  //               setState(() {
+  //                 //radioItem = data.value ;
+  //                 _radioVal = data.id;
+  //               });
+  //             },
+  //           )).toList(),
+  //         ),
+  //       ));
+  // }
 }

@@ -10,5 +10,6 @@ class Routes{
   static const String otp_screen = '/otp_screen';
   static const String home = '/home';
   static const String login='/login';
+  static const String user_type="/user_type";
 
 }
