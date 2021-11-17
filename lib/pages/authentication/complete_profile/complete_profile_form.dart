@@ -1,0 +1,219 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:smile_engage/components/CustomSuffixIcon.dart';
+import 'package:smile_engage/config/constants.dart';
+import 'package:smile_engage/config/size_config.dart';
+import 'package:smile_engage/pages/authentication/components/form_error.dart';
+import 'package:smile_engage/pages/ui/default_button.dart';
+import 'package:smile_engage/routes/ui_routes.dart';
+
+
+class CompleteProfileForm extends StatefulWidget {
+  @override
+  _CompleteProfileFormState createState() => _CompleteProfileFormState();
+}
+
+class _CompleteProfileFormState extends State<CompleteProfileForm> {
+  final _formKey = GlobalKey<FormState>();
+  final List<String?> errors = [];
+  String? firstName;
+  String? lastName;
+  String? phoneNumber;
+  String? address;
+  final TextEditingController fNameController = new TextEditingController();
+  final TextEditingController sNameController = new TextEditingController();
+  final TextEditingController mobilePhoneController =
+      new TextEditingController();
+  final TextEditingController addressController = new TextEditingController();
+
+  final DatabaseReference dbRef =
+      FirebaseDatabase.instance.reference().child("users");
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  late final User currUser;
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  void getUser(){
+    currUser = _firebaseAuth.currentUser!;
+    final uid = currUser.uid;
+  }
+  void addError({String? error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //getUser();
+    return WillPopScope(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              buildFirstNameFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildLastNameFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildPhoneNumberFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildAddressFormField(),
+              FormError(errors: errors),
+              SizedBox(height: getProportionateScreenHeight(40)),
+              DefaultButton(
+                text: "continue",
+                press: () {
+                  if (_formKey.currentState!.validate()) {
+                    completeProfile();
+
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+        onWillPop: onWillPop);
+  }
+
+  TextFormField buildAddressFormField() {
+    return TextFormField(
+      controller: addressController,
+      onSaved: (newValue) => address = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kAddressNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kAddressNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Address",
+        hintText: "Enter your phone address",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon:
+            CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildPhoneNumberFormField() {
+    return TextFormField(
+      controller: mobilePhoneController,
+      keyboardType: TextInputType.phone,
+      onSaved: (newValue) => phoneNumber = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPhoneNumberNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPhoneNumberNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Phone Number",
+        hintText: "Enter your phone number",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildLastNameFormField() {
+    return TextFormField(
+      controller: sNameController,
+      onSaved: (newValue) => lastName = newValue,
+      decoration: InputDecoration(
+        labelText: "Last Name",
+        hintText: "Enter your last name",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildFirstNameFormField() {
+    return TextFormField(
+      controller: fNameController,
+      onSaved: (newValue) => firstName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kNamelNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kNamelNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "First Name",
+        hintText: "Enter your first name",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+      ),
+    );
+  }
+
+  Future<bool> onWillPop() async {
+    deleteUser();
+    Navigator.pop(context);
+    return true;
+  }
+ 
+
+  Future<void> deleteUser() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print('The user must reauthenticate before this operation can be executed.');
+      }
+    }
+  }
+
+  void completeProfile() {
+    dbRef.push().set({
+      "firstName": fNameController.text,
+      "lastName": sNameController.text,
+      "phoneNumber": mobilePhoneController.text,
+      "address": addressController.text
+    }
+
+    ).then((user) =>  Navigator.pushNamed(context, Routes.home));//TODO otp screen
+  }
+}

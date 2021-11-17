@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "457930768838",
+    "project_id": "smileengage-f94f2",
+    "storage_bucket": "smileengage-f94f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457930768838:android:19e5352ab8d896fb12b2c7",
+        "android_client_info": {
+          "package_name": "com.payalmangla.smile_engage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457930768838-n67dckhohlpm77r7jfplpt7as5etdllh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.payalmangla.smile_engage",
+            "certificate_hash": "237795367fd89a59fdd3a7c1d640e254dd8d9f85"
+          }
+        },
+        {
+          "client_id": "457930768838-5o9lljv84bj3ar7r6qabru2dcgdvar1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgNh20OB04awZBQzBZopbciV0kYqTH2B0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457930768838-5o9lljv84bj3ar7r6qabru2dcgdvar1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
