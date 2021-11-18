@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/size_config.dart';
 import 'package:smile_engage/pages/authentication/complete_profile/complete_profile_form.dart';
+import 'package:smile_engage/pages/models/register_model.dart';
 
 class ProfileBody extends StatelessWidget{
+  final RegisterModel newUser;
+
+   ProfileBody( this.newUser);
+
   @override
   Widget build(BuildContext context) {
 
@@ -24,7 +29,7 @@ class ProfileBody extends StatelessWidget{
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.06),
-                CompleteProfileForm(),
+                CompleteProfileForm(newUser),
                 SizedBox(height: getProportionateScreenHeight(30)),
                 Text(
                   "By continuing your confirm that you agree \nwith our Term and Condition",

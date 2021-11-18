@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Welcome Screen',
       onGenerateRoute: AppRoutes.generateRoute,
+
       //initialRoute: Routes.welcome_screen,
         initialRoute: Routes.intro,
       //home: WelcomeScreen(),

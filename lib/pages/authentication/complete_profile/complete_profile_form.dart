@@ -6,16 +6,22 @@ import 'package:smile_engage/components/CustomSuffixIcon.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/size_config.dart';
 import 'package:smile_engage/pages/authentication/components/form_error.dart';
+import 'package:smile_engage/pages/authentication/register/register_page.dart';
+import 'package:smile_engage/pages/models/register_model.dart';
 import 'package:smile_engage/pages/ui/default_button.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 
 
 class CompleteProfileForm extends StatefulWidget {
+  final RegisterModel currUser;
+
+   CompleteProfileForm(this.currUser) ;
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
 }
 
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
+
   final _formKey = GlobalKey<FormState>();
   final List<String?> errors = [];
   String? firstName;
@@ -31,17 +37,20 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final DatabaseReference dbRef =
       FirebaseDatabase.instance.reference().child("users");
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  late final User currUser;
+  late final RegisterModel currUser;
+  bool isAdmin=false;
+  //final  UUId uid;
   @override
   void initState() {
     super.initState();
-    getUser();
+   // getUser();
   }
 
-  void getUser(){
-    currUser = _firebaseAuth.currentUser!;
-    final uid = currUser.uid;
-  }
+  // void getUser(){
+  //   //currUser = _firebaseAuth.currentUser!;
+  //   currentUser=
+  // //  uid = currUser.uid;
+  // }
   void addError({String? error}) {
     if (!errors.contains(error))
       setState(() {
@@ -59,6 +68,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   @override
   Widget build(BuildContext context) {
     //getUser();
+    // final routeArgs =
+    // ModalRoute.of(context).settings.arguments as Map<String, int>;
+    // if(arguments['_radioVal']=='isAdmin')  isAdmin=true;
+    currUser=widget.currUser;
     return WillPopScope(
         child: Form(
           key: _formKey,
@@ -190,7 +203,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   }
 
   Future<bool> onWillPop() async {
-    deleteUser();
+    //deleteUser();
     Navigator.pop(context);
     return true;
   }
@@ -206,12 +219,21 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     }
   }
 
-  void completeProfile() {
+  Future<void> completeProfile() async {
+    UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(
+          email: currUser.email,
+          password: currUser.password,
+          );
     dbRef.push().set({
+      "email": currUser.email,
+      "password":currUser.password,
+      "isAdmin":currUser.isAdmin,
       "firstName": fNameController.text,
       "lastName": sNameController.text,
       "phoneNumber": mobilePhoneController.text,
-      "address": addressController.text
+      "address": addressController.text,
+
     }
 
     ).then((user) =>  Navigator.pushNamed(context, Routes.home));//TODO otp screen

@@ -5,6 +5,9 @@ import 'package:smile_engage/config/size_config.dart';
 import 'sign_up_form.dart';
 
 class SignUpBody extends StatelessWidget {
+  final int isAdmin;
+  SignUpBody(this.isAdmin);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +26,7 @@ class SignUpBody extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                SignUpForm(),
+                SignUpForm(isAdmin),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
