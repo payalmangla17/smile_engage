@@ -20,7 +20,7 @@ class HomePageArgs {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({
+  const HomePage({
     Key? key,
     required this.chatClient,
   }) : super(key: key);
@@ -37,11 +37,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return StreamChat(
-      // Top level Widget to set the theme of the application unless overriden
+      /// Top level Widget to set the theme of the application unless overridden
       client: widget.chatClient,
       streamChatThemeData: StreamChatThemeData(
         brightness: Theme.of(context).brightness,
-        channelListHeaderTheme: ChannelListHeaderThemeData(
+        channelListHeaderTheme: const ChannelListHeaderThemeData(
           color: appBlueColor,
 
         ),
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
 
         ),
 
-        messageInputTheme: MessageInputThemeData(
+        messageInputTheme: const MessageInputThemeData(
           actionButtonColor: appBlueColor,
           actionButtonIdleColor: appBlueColor,
           sendButtonIdleColor: appBlueColor,
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           messageBackgroundColor: appBlueColor.withOpacity(0.5),
           messageBorderColor: appBlueColor,
         ),
-        primaryIconTheme: IconThemeData(color: appBlueColor),
+        primaryIconTheme: const IconThemeData(color: appBlueColor),
       ),
 
       child: WillPopScope(

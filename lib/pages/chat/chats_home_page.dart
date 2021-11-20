@@ -1,11 +1,10 @@
 import 'dart:async';
-
-
-import 'package:microsoft_teams_clone/pages/mentions/user_mentions_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:smile_engage/config/constants.dart';
+import 'package:smile_engage/pages/chat/user_mentions.dart';
+import 'package:smile_engage/pages/meetings/meetings_page.dart';
 import 'package:smile_engage/pages/ui/drawer.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:smile_engage/services/stream_chat/stream_chat_api.dart';
@@ -49,7 +48,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
             StreamSvgIcon.message(
               color: _isSelected(1) ? appAccentColor : Colors.grey,
             ),
-            Positioned(
+            const Positioned(
               top: -3,
               right: -16,
               child: UnreadIndicator(),
@@ -81,7 +80,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
     }
     return Scaffold(
       //scaffold for search box
-      backgroundColor: StreamChatTheme.of(context).colorTheme.whiteSnow,
+      backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
       appBar: ChannelListHeader(
         titleBuilder: (context, connectionStatus, streamClient) {
           var status = StreamApi.kDefaultStreamClient.wsConnectionStatus;
@@ -90,7 +89,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
               'Connecting...',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: StreamChatTheme.of(context).colorTheme.black,
+                  color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
                   fontSize: 16.0),
             );
           }
@@ -98,7 +97,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
             'Microsoft Teams',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: StreamChatTheme.of(context).colorTheme.black,
+                color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
                 fontSize: 16.0),
           );
         },
@@ -114,14 +113,14 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
       ),
       drawerEdgeDragWidth: 50,
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: StreamChatTheme.of(context).colorTheme.white,
+        backgroundColor: StreamChatTheme.of(context).colorTheme.barsBg,
         currentIndex: _currentIndex,
         items: _navBarItems,
         selectedLabelStyle: StreamChatTheme.of(context).textTheme.footnoteBold,
         unselectedLabelStyle:
         StreamChatTheme.of(context).textTheme.footnoteBold,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: StreamChatTheme.of(context).colorTheme.black,
+        selectedItemColor: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
           setState(() => _currentIndex = index);
