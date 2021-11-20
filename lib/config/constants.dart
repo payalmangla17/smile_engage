@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smile_engage/config/size_config.dart';
 
 const appAccentColor = Color(0xFF6C63FF);
-const appLightColor = Color(0xFFCABFFF);
+const appLightColor = Color(0xFF9EB7E8);
 const appPurpleColor = Color(0xFF6C63FF);
 var appAccentIconColor = Color(0xFF6C63FF).withOpacity(0.8);
 const appBlueColor= Color(0xFF2E7CF8);
