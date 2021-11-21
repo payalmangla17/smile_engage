@@ -33,10 +33,12 @@ dependencies:
 
   firebase_database:
   firebase_auth: ^1.0.1
+  firebase_core:
 
   # stream chat
 
   stream_chat_flutter: ^3.2.0
+  stream_chat:
   stream_chat_persistence:
   stream_chat_flutter_core: ^3.2.0
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/pages/chat/group_chat/channel_page.dart';
@@ -8,7 +9,6 @@ import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import 'chips_input_text_field.dart';
-
 
 /*
 This page renders the UI for the new chat page and integrates the BusinessLogic
@@ -24,7 +24,7 @@ class NewChatPage extends StatefulWidget {
 
 class _NewChatPageState extends State<NewChatPage> {
   final _chipInputTextFieldStateKey =
-  GlobalKey<ChipInputTextFieldState<User>>();
+      GlobalKey<ChipInputTextFieldState<User>>();
 
   late TextEditingController _controller;
 
@@ -85,7 +85,7 @@ class _NewChatPageState extends State<NewChatPage> {
           filter: Filter.raw(value: {
             'members': [
               ..._selectedUsers.map((e) => e.id),
-              chatState.user!.id,
+              chatState.currentUser!.id,
             ],
             'distinct': true,
           }),
@@ -105,7 +105,7 @@ class _NewChatPageState extends State<NewChatPage> {
             extraData: {
               'members': [
                 ..._selectedUsers.map((e) => e.id),
-                chatState.user!.id,
+                chatState.currentUser!.id,
               ],
             },
           );
@@ -133,16 +133,16 @@ class _NewChatPageState extends State<NewChatPage> {
     return Scaffold(
       backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
       appBar: AppBar(
-        brightness: Theme.of(context).brightness,
+        systemOverlayStyle: Theme.of(context).brightness == Brightness.dark
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark,
         elevation: 0,
         backgroundColor: appPurpleColor,
         leading: const StreamBackButton(),
         title: Text(
           'New Chat',
-          style: StreamChatTheme.of(context)
-              .textTheme
-              .headlineBold
-              .copyWith(color: StreamChatTheme.of(context).colorTheme.textHighEmphasis),
+          style: StreamChatTheme.of(context).textTheme.headlineBold.copyWith(
+              color: StreamChatTheme.of(context).colorTheme.textHighEmphasis),
         ),
         centerTitle: true,
       ),
@@ -226,8 +226,9 @@ class _NewChatPageState extends State<NewChatPage> {
                               ),
                             ),
                             StreamSvgIcon.close(
-                              color:
-                              StreamChatTheme.of(context).colorTheme.textHighEmphasis,
+                              color: StreamChatTheme.of(context)
+                                  .colorTheme
+                                  .textHighEmphasis,
                             ),
                           ],
                         ),
@@ -241,13 +242,13 @@ class _NewChatPageState extends State<NewChatPage> {
                     },
                   ),
                   if (!_isSearchActive && !_selectedUsers.isNotEmpty)
-                    CreateGroupTile(),
+                    const CreateGroupTile(),
                   if (_showUserList)
                     Container(
                       width: double.maxFinite,
                       decoration: BoxDecoration(
                         gradient:
-                        StreamChatTheme.of(context).colorTheme.bgGradient,
+                            StreamChatTheme.of(context).colorTheme.bgGradient,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -262,85 +263,85 @@ class _NewChatPageState extends State<NewChatPage> {
                                 .textTheme
                                 .footnote
                                 .copyWith(
-                                color: StreamChatTheme.of(context)
-                                    .colorTheme
-                                    .textHighEmphasis
-                                    .withOpacity(.5))),
+                                    color: StreamChatTheme.of(context)
+                                        .colorTheme
+                                        .textHighEmphasis
+                                        .withOpacity(.5))),
                       ),
                     ),
                   Expanded(
                     child: _showUserList
                         ? GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onPanDown: (_) => FocusScope.of(context).unfocus(),
-                      child: UsersBloc(
-                        child: UserListView(
-                          selectedUsers: _selectedUsers,
-                          groupAlphabetically:
-                          _isSearchActive ? false : true,
-                          onUserTap: (user, _) {
-                            _controller.clear();
-                            if (!_selectedUsers.contains(user)) {
-                              _chipInputTextFieldState
-                                ?..addItem(user)
-                                ..pauseItemAddition();
-                            } else {
-                              _chipInputTextFieldState!.removeItem(user);
-                            }
-                          },
-                          pagination: const PaginationParams(
-                            limit: 25,
-                          ),
-                          filter: Filter.and([
-                            if (_userNameQuery.isNotEmpty)
-                              Filter.autoComplete('name', _userNameQuery),
-                            Filter.notEqual(
-                                'id', StreamChat.of(context).user!.id),
-                          ]),
-                          sort: const [
-                            SortOption(
-                              'name',
-                              direction: 1,
-                            ),
-                          ],
-                          emptyBuilder: (_) {
-                            return LayoutBuilder(
-                              builder: (context, viewportConstraints) {
-                                return SingleChildScrollView(
-                                  physics:
-                                  AlwaysScrollableScrollPhysics(),
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      minHeight:
-                                      viewportConstraints.maxHeight,
-                                    ),
-                                    child: NoUserMatch(),
+                            behavior: HitTestBehavior.opaque,
+                            onPanDown: (_) => FocusScope.of(context).unfocus(),
+                            child: UsersBloc(
+                              child: UserListView(
+                                selectedUsers: _selectedUsers,
+                                groupAlphabetically:
+                                    _isSearchActive ? false : true,
+                                onUserTap: (user, _) {
+                                  _controller.clear();
+                                  if (!_selectedUsers.contains(user)) {
+                                    _chipInputTextFieldState
+                                      ?..addItem(user)
+                                      ..pauseItemAddition();
+                                  } else {
+                                    _chipInputTextFieldState!.removeItem(user);
+                                  }
+                                },
+                                pagination: const PaginationParams(
+                                  limit: 25,
+                                ),
+                                filter: Filter.and([
+                                  if (_userNameQuery.isNotEmpty)
+                                    Filter.autoComplete('name', _userNameQuery),
+                                  Filter.notEqual(
+                                      'id', StreamChat.of(context).currentUser!.id),
+                                ]),
+                                sort: const [
+                                  SortOption(
+                                    'name',
+                                    direction: 1,
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    )
-                        : FutureBuilder<bool>(
-                      future: channel!.initialized,
-                      builder: (context, snapshot) {
-                        if (snapshot.data == true) {
-                          return MessageListView();
-                        }
-
-                        return const Center(
-                          child: Text(
-                            'No chats here yet...',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: appLightColor,
+                                ],
+                                emptyBuilder: (_) {
+                                  return LayoutBuilder(
+                                    builder: (context, viewportConstraints) {
+                                      return SingleChildScrollView(
+                                        physics:
+                                            AlwaysScrollableScrollPhysics(),
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            minHeight:
+                                                viewportConstraints.maxHeight,
+                                          ),
+                                          child: NoUserMatch(),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ),
+                          )
+                        : FutureBuilder<bool>(
+                            future: channel!.initialized,
+                            builder: (context, snapshot) {
+                              if (snapshot.data == true) {
+                                return MessageListView();
+                              }
+
+                              return const Center(
+                                child: Text(
+                                  'No chats here yet...',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: appLightColor,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
                   ),
                   MessageInput(
                     focusNode: _messageInputFocusNode,
