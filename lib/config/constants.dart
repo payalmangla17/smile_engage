@@ -5,7 +5,7 @@ import 'package:smile_engage/config/size_config.dart';
 const appAccentColor = Color(0xFF6C63FF);
 const appLightColor = Color(0xFF9EB7E8);
 const appPurpleColor = Color(0xFF6C63FF);
-var appAccentIconColor = Color(0xFF6C63FF).withOpacity(0.8);
+var appAccentIconColor = Color(0xFF6397FF).withOpacity(0.8);
 const appBlueColor= Color(0xFF2E7CF8);
 const white=Color(0xFFFFFFFF);
 const appLightBlueColor= Color(0xFF9CC0F8);

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:smile_engage/components/CustomSuffixIcon.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/size_config.dart';
@@ -8,6 +9,9 @@ import 'package:smile_engage/pages/authentication/components/form_error.dart';
 import 'package:smile_engage/pages/ui/default_button.dart';
 import 'package:smile_engage/pages/ui/keyboard.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
+
+
+import '../user_info_page.dart';
 
 
 
@@ -52,15 +56,19 @@ class _SignFormState extends State<SignForm> {
     passwordController.addListener(onChange);
 
     return Form(
+
       key: _formKey,
       child: Column(
+
         children: [
+
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(30),),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
+
               Checkbox(
                 value: remember,
                 activeColor: kPrimaryColor,
@@ -90,11 +98,46 @@ class _SignFormState extends State<SignForm> {
               if (_formKey.currentState!.validate()) {
               //  _formKey.currentState!.save();
                 signIn(emailController.text, passwordController.text)
-                    .then((uid) => {Navigator.pushNamed(context, Routes.home)})
-                    .catchError((error) => {processError(error)});
+                    .then((uid) => {
+                if (uid != null) {
+                  print(uid),
+                    KeyboardUtil.hideKeyboard(context),
+                    Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        UserInfoPage(
+                          user: FirebaseAuth.instance.currentUser as User,
+                        ),
+                  ),
+                )
+              }
+              else{
+                FormError(errors: errors)
+              }
+            });
+
+                //      Navigator.pushNamed(context, Routes.home)});
+
+
+                 //   .catchError((error) => {processError(error)}) as UserCredential;
                 // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, Routes.home);
+
+
+                // if (userCredential.user != null) {
+                //   Navigator.of(context).pushReplacement(
+                //     MaterialPageRoute(
+                //       builder: (context) => UserInfoPage(
+                //         user: userCredential.user as User,
+                //       ),
+                //     ),
+                //   );
+                // }else{
+                //   print(userCredential.user);
+                //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //     content: Text("njwndj"),
+                //   ));
+                // }
+              //  Navigator.pushNamed(context, Routes.home);
               }
             },
           ),
@@ -175,10 +218,26 @@ class _SignFormState extends State<SignForm> {
   }
 
 
-  Future<UserCredential> signIn(final String email, final String password) async {
-    UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-    return userCredential;
+  Future<UserCredential?> signIn(final String email, final String password) async {
+    UserCredential? userCredential;
+    try{
+      userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return userCredential;
+    }
+    on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        errors.add("Unable to find user. Please register.");
+      } else if (e.code == 'wrong-password') {
+        errors.add("Incorrect Password");
+      }
+      else{
+        errors.add("There was an error logging in. Please try again later.");
+      }
+    }
+    return null;
+
+
   }
   void processError(final PlatformException error) {
     if (error.code == "ERROR_USER_NOT_FOUND") {
