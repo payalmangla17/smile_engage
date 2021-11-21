@@ -1,11 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smile_engage/routes/app_routes.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
+import 'package:smile_engage/services/stream_chat/stream_chat_api.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import 'welcome_screen.dart';
 
@@ -25,6 +30,7 @@ class MyApp extends StatelessWidget {
   // comment it and make state to statefulwidget
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Welcome Screen',
       onGenerateRoute: AppRoutes.generateRoute,

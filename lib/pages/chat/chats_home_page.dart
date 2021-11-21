@@ -94,7 +94,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
             );
           }
           return Text(
-            'Microsoft Teams',
+            'Smile',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
