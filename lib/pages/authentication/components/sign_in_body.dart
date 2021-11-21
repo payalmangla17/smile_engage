@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smile_engage/config/custome_colors.dart';
 import 'package:smile_engage/config/size_config.dart';
+import 'package:smile_engage/services/authentication/authentication.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 
 import 'no_account_text.dart';
@@ -9,9 +13,11 @@ class SignInBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
       body: SizedBox(
         width: double.infinity,
         child: Padding(
+
           padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
@@ -32,7 +38,7 @@ class SignInBody extends StatelessWidget {
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SignForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+              //  SizedBox(height: SizeConfig.screenHeight * 0.08),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: [
@@ -51,6 +57,7 @@ class SignInBody extends StatelessWidget {
                 //   ],
                 // ),
                 SizedBox(height: getProportionateScreenHeight(20)),
+
                 NoAccountText(),
               ],
             ),
