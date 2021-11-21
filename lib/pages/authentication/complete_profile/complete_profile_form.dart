@@ -236,6 +236,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
     }
 
-    ).then((user) =>  Navigator.pushNamed(context, Routes.home));//TODO otp screen
+    ).then((user) =>  Navigator.popAndPushNamed(context, Routes.home,arguments:userCredential));//TODO otp screen
   }
 }

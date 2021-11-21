@@ -6,8 +6,11 @@ import 'package:smile_engage/pages/authentication/register/register_page.dart';
 import 'package:smile_engage/pages/authentication/register/user_type_page.dart';
 import 'package:smile_engage/pages/authentication/register/user_type_screen.dart';
 import 'package:smile_engage/pages/authentication/sign_in_page.dart';
+import 'package:smile_engage/pages/chat/chats_home_page.dart';
+import 'package:smile_engage/pages/chat/new_chat.dart';
 import 'package:smile_engage/pages/home/home_page.dart';
 import 'package:smile_engage/pages/introduction_animation/introduction_animation.dart';
+import 'package:smile_engage/pages/meetings/meet.dart';
 import 'package:smile_engage/pages/models/register_model.dart';
 import 'package:smile_engage/pages/page_viewer/features.dart';
 
@@ -62,13 +65,31 @@ class AppRoutes {
           return OtpScreen();
         });
       case Routes.home:
-        return MaterialPageRoute(builder: (_) {
-          return HomePage();
+        return MaterialPageRoute(
+            settings: const RouteSettings(name: Routes.home),
+            builder: (_) {
+              final userArgs=args as HomePageArgs;
+          return HomePage(currUser: userArgs,);
         });
       case Routes.user_type:
         return MaterialPageRoute(builder: (_) {
           return UserTypePage();
         });
+
+      case Routes.create_meet:
+        return MaterialPageRoute(builder: (_) {
+          return CreateMeeting();
+        });
+
+      case Routes.new_chat:
+        return MaterialPageRoute(builder: (_) {
+          return NewChat();
+        });
+      case Routes.channel_list_page:
+        return MaterialPageRoute(builder: (_) {
+          return ChannelListPage();
+        });
+
     }
   }
 }
