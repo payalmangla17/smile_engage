@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smile_engage/config/size_config.dart';
 import 'package:smile_engage/pages/authentication/register/sign_up_body.dart';
 
 class RegisterPageArgs{
@@ -16,7 +17,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    SizeConfig().init(context);
     // final routeArgs =
     // ModalRoute.of(context).settings.arguments as Map<String, int>;
     return Scaffold(

@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,11 +11,10 @@ import 'package:smile_engage/pages/authentication/components/form_error.dart';
 import 'package:smile_engage/pages/ui/default_button.dart';
 import 'package:smile_engage/pages/ui/keyboard.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
+import 'package:smile_engage/services/authentication/authentication.dart';
 
 
 import '../user_info_page.dart';
-
-
 
 
 class SignForm extends StatefulWidget {
@@ -26,12 +27,16 @@ class _SignFormState extends State<SignForm> {
   String? email;
   String? password;
   bool? remember = false;
+  late User user;
   final List<String?> errors = [];
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  final DatabaseReference dbRef =
+  FirebaseDatabase.instance.reference().child("users");
   String _errorMessage = '';
+
   void addError({String? error}) {
     if (!errors.contains(error))
       setState(() {
@@ -45,11 +50,13 @@ class _SignFormState extends State<SignForm> {
         errors.remove(error);
       });
   }
+
   void onChange() {
     setState(() {
       _errorMessage = '';
     });
   }
+
   @override
   Widget build(BuildContext context) {
     emailController.addListener(onChange);
@@ -57,92 +64,98 @@ class _SignFormState extends State<SignForm> {
 
     return Form(
 
-      key: _formKey,
-      child: Column(
+        key: _formKey,
+        child: Column(
 
-        children: [
-
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30),),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          Row(
             children: [
 
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              Text("Remember me"),
-              Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, Routes.forget_password),
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
+            buildEmailFormField(),
+            SizedBox(height: getProportionateScreenHeight(30),),
+            buildPasswordFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            Row(
+              children: [
+
+                Checkbox(
+                  value: remember,
+                  activeColor: kPrimaryColor,
+                  onChanged: (value) {
+                    setState(() {
+                      remember = value;
+                    });
+                  },
                 ),
-              )
-            ],
-          ),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
+                Text("Remember me"),
+                Spacer(),
+                GestureDetector(
+                  onTap: () =>
+                      Navigator.pushNamed(
+                          context, Routes.forget_password),
+                  child: Text(
+                    "Forgot Password",
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                )
+          ],
+        ),
+        FormError(errors: errors),
+        SizedBox(height: getProportionateScreenHeight(20)),
+        DefaultButton(
             text: "Continue",
             press: () async {
               if (_formKey.currentState!.validate()) {
-              //  _formKey.currentState!.save();
+                //  _formKey.currentState!.save();
                 signIn(emailController.text, passwordController.text)
-                    .then((uid) => {
-                if (uid != null) {
-                  print(uid),
+                    .then((uid) =>
+                {
+                  if (uid != null) {
+                    print(uid),
                     KeyboardUtil.hideKeyboard(context),
                     Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        UserInfoPage(
-                          user: FirebaseAuth.instance.currentUser as User,
-                        ),
-                  ),
-                )
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            UserInfoPage(
+                              user: FirebaseAuth.instance.currentUser as User,
+                            ),
+                      ),
+                    )
+                  }
+                  else
+                    {
+                      FormError(errors: errors)
+                    }
+                });
               }
-              else{
-                FormError(errors: errors)
-              }
-            });
+              //KeyboardUtil.hideKeyboard(context);
 
-                //      Navigator.pushNamed(context, Routes.home)});
+              //      Navigator.pushNamed(context, Routes.home)});
 
 
-                 //   .catchError((error) => {processError(error)}) as UserCredential;
-                // if all are valid then go to success screen
+              //   .catchError((error) => {processError(error)}) as UserCredential;
+              // if all are valid then go to success screen
 
 
-                // if (userCredential.user != null) {
-                //   Navigator.of(context).pushReplacement(
-                //     MaterialPageRoute(
-                //       builder: (context) => UserInfoPage(
-                //         user: userCredential.user as User,
-                //       ),
-                //     ),
-                //   );
-                // }else{
-                //   print(userCredential.user);
-                //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //     content: Text("njwndj"),
-                //   ));
-                // }
+              // if (userCredential.user != null) {
+              //   Navigator.of(context).pushReplacement(
+              //     MaterialPageRoute(
+              //       builder: (context) => UserInfoPage(
+              //         user: userCredential.user as User,
+              //       ),
+              //     ),
+              //   );
+              // }else{
+              //   print(userCredential.user);
+              //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              //     content: Text("njwndj"),
+              //   ));
+              // }
               //  Navigator.pushNamed(context, Routes.home);
-              }
-            },
-          ),
-        ],
-      ),
+
+            },)
+    ,]
+    ,
+    )
+    ,
     );
   }
 
@@ -169,7 +182,7 @@ class _SignFormState extends State<SignForm> {
         }
         return null;
       },
-      textInputAction: TextInputAction.done,
+     // textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
@@ -212,18 +225,25 @@ class _SignFormState extends State<SignForm> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
-      textInputAction: TextInputAction.next,
-     // onEditingComplete: () => node.nextFocus(),
+   //   textInputAction: TextInputAction.next,
+      // onEditingComplete: () => node.nextFocus(),
     );
   }
 
 
-  Future<UserCredential?> signIn(final String email, final String password) async {
+  Future<UserCredential?> signIn(final String email,
+      final String password) async {
     UserCredential? userCredential;
-    try{
+   // await Firebase.initializeApp();
+    Authentication.initializeFirebase(context: context);
+    //final UserCredential userCredential;
+    try {
       userCredential = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return userCredential;
+
+
+      // return userCredential;
     }
     on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -231,18 +251,17 @@ class _SignFormState extends State<SignForm> {
       } else if (e.code == 'wrong-password') {
         errors.add("Incorrect Password");
       }
-      else{
+      else {
         errors.add("There was an error logging in. Please try again later.");
       }
     }
     return null;
-
-
   }
+
   void processError(final PlatformException error) {
     if (error.code == "ERROR_USER_NOT_FOUND") {
       setState(() {
-       errors.add("Unable to find user. Please register.");
+        errors.add("Unable to find user. Please register.");
       });
     } else if (error.code == "ERROR_WRONG_PASSWORD") {
       setState(() {
@@ -251,15 +270,16 @@ class _SignFormState extends State<SignForm> {
       });
     } else {
       setState(() {
-       // _errorMessage =
+        // _errorMessage =
         errors.add("There was an error logging in. Please try again later.");
       });
     }
   }
+
   @override
-  void dispose(){
-    passwordController.removeListener(onChange);
-    emailController.removeListener(onChange);
+  void dispose() {
+    // passwordController.removeListener(onChange);
+    // emailController.removeListener(onChange);
     super.dispose();
   }
 

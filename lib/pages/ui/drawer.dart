@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smile_engage/config/constants.dart';
+import 'package:smile_engage/routes/app_routes.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
+import 'package:smile_engage/services/authentication/authentication.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
+import 'package:recase/recase.dart';
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
     Key? key,
@@ -15,10 +18,12 @@ class LeftDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    userName = user.name;
+    print("usera");
+    print(user);
+    //userName = user.name;
     return Drawer(
       child: Container(
-    //    color: StreamChatTheme.of(context).colorTheme.white,
+        //    color: StreamChatTheme.of(context).colorTheme.white,
         child: SafeArea(
           // child: SizedBox(c)
           child: Column(
@@ -29,7 +34,7 @@ class LeftDrawer extends StatelessWidget {
                   left: 4,
                 ),
                 child: Container(
-                  color: appPurpleColor,
+                  color: appBlueColor,
                   height: MediaQuery.of(context).viewPadding.top + 40,
                   child: Row(
                     children: [
@@ -44,7 +49,7 @@ class LeftDrawer extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          user.name,
+                          "Hello\n"+ user.name.titleCase,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -120,9 +125,9 @@ class LeftDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 10.5, color: Colors.grey),
               ),
               Divider(
-              //  color: StreamChatTheme.of(context).colorTheme.overlay.withAlpha(1)
+                //  color: StreamChatTheme.of(context).colorTheme.overlay.withAlpha(1)
 
-                 //   .withOpacity(0.3),
+                //   .withOpacity(0.3),
                 thickness: 0.5,
                 height: 20,
               ),
@@ -133,15 +138,15 @@ class LeftDrawer extends StatelessWidget {
                     onTap: () async {
                       Navigator.pop(context);
                       // TODO LOGOUT FUNCTIONALITY
-                      //final secureStorage = FlutterSecureStorage();
-                    //  await secureStorage.deleteAll();
+                      final secureStorage = FlutterSecureStorage();
+                       await secureStorage.deleteAll();
 
                       final client = StreamChat.of(context).client;
                       client.disconnectUser();
                       await client.dispose();
-                      //await Authentication.signOut(context: context);
-                      // await Navigator.of(context)
-                      //     .pushReplacement(routeToSignInPage());
+                      await Authentication.signOut(context: context);
+                      await Navigator.of(context)
+                          .pushReplacement(routeToSignInPage());
                     },
                     // leading: StreamSvgIcon.userRemove(
                     //   color: appAccentColor,

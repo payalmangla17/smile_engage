@@ -15,6 +15,7 @@ class Authentication {
   static Future<FirebaseApp> initializeFirebase({
     required BuildContext context,
   }) async {
+    WidgetsFlutterBinding.ensureInitialized();
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
     User? user = FirebaseAuth.instance.currentUser;
@@ -43,19 +44,23 @@ class Authentication {
     );
   }
 
-  static Future<void> signOut({required BuildContext context}) async {
+  static Future<bool> signOut({required BuildContext context}) async {
 
     try {
-      if (!kIsWeb) {
-        await FirebaseAuth.instance.signOut();
-      }
+      // if (!kIsWeb) {
+      //   await FirebaseAuth.instance.signOut();
+      // }
       await FirebaseAuth.instance.signOut();
-    } catch (e) {
+      return true;
+    } catch ( e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         Authentication.customSnackBar(
           content: 'Error signing out. Try again.',
         ),
+
       );
+      return false;
     }
   }
 }

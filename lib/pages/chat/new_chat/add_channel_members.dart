@@ -58,7 +58,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
       backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: appPurpleColor,
+        backgroundColor: appBlueColor,
         leading: const StreamBackButton(),
         title: Text(
           'Add Group Members',

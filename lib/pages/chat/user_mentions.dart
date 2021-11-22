@@ -9,7 +9,7 @@ import 'group_chat/channel_page.dart';
 class UserMentionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = StreamChat.of(context).user!;
+    final user = StreamChat.of(context).currentUser!;
     return MessageSearchBloc(
       child: MessageSearchListView(
         filters: Filter.in_('members', [user.id]),
@@ -41,7 +41,7 @@ class UserMentionsPage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(24),
                           child: StreamSvgIcon.mentions(
-                            size: 96,
+                            size: MediaQuery.of(context).size.height* 0.35,
                             color: StreamChatTheme.of(context)
                                 .colorTheme
                                 .disabled,
