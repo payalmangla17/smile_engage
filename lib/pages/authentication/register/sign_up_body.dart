@@ -28,22 +28,23 @@ class SignUpBody extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                FutureBuilder(
-                    future: Authentication.initializeFirebase(context: context),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error initializing Firebase');
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        //  return GoogleSignInButton();
-                        return SignUpForm(isAdmin);
-                      }
-                      return CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          CustomColors.firebaseOrange,
-                        ),
-                      );
-                    }),
+                  SignUpForm(isAdmin),
+                  // FutureBuilder(
+                  //     future: Authentication.initializeFirebase(context: context),
+                  //     builder: (context, snapshot) {
+                  //       if (snapshot.hasError) {
+                  //         return Text('Error initializing Firebase');
+                  //       } else if (snapshot.connectionState ==
+                  //           ConnectionState.done) {
+                  //         //  return GoogleSignInButton();
+                  //         return SignUpForm(isAdmin);
+                  //       }
+                  //       return CircularProgressIndicator(
+                  //         valueColor: AlwaysStoppedAnimation<Color>(
+                  //           CustomColors.firebaseOrange,
+                  //         ),
+                  //       );
+                  //     }),
 
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 // Row(

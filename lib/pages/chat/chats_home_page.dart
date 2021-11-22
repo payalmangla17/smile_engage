@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/pages/chat/user_mentions.dart';
 import 'package:smile_engage/pages/meetings/meetings_page.dart';
@@ -9,6 +10,7 @@ import 'package:smile_engage/pages/ui/drawer.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:smile_engage/services/stream_chat/stream_chat_api.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
 
 import '../../services/stream_chat/chat_list.dart';
 
@@ -48,7 +50,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
             StreamSvgIcon.message(
               color: _isSelected(1) ? appAccentColor : Colors.grey,
             ),
-            const Positioned(
+            Positioned(
               top: -3,
               right: -16,
               child: UnreadIndicator(),
@@ -74,7 +76,8 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = StreamChat.of(context).user;
+    final user = StreamChat.of(context).currentUser;
+    print(user);
     if (user == null) {
       return Offstage();
     }

@@ -55,6 +55,7 @@ dependencies:
   flutter_secure_storage: ^4.2.0
   flutter_app_badger: ^1.2.0
   pin_code_fields: ^7.3.0
+  recase: ^4.0.0
   page_transition:
   font_awesome_flutter:
 

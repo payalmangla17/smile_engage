@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
@@ -6,7 +7,6 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import 'channel_page.dart';
-
 
 /*
 This page sets the Name of the group chat, once the user has selected
@@ -69,8 +69,10 @@ class _ChannelNamePage extends State<ChannelNamePage> {
       child: Scaffold(
         backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
         appBar: AppBar(
-          backgroundColor: appPurpleColor,
-          brightness: Theme.of(context).brightness,
+          backgroundColor: appBlueColor,
+          systemOverlayStyle: Theme.of(context).brightness == Brightness.dark
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle.dark,
           elevation: 1,
           leading: const StreamBackButton(),
           title: Text(
@@ -128,28 +130,28 @@ class _ChannelNamePage extends State<ChannelNamePage> {
               onPressed: _isGroupNameEmpty
                   ? null
                   : () async {
-                try {
-                  final groupName = _groupNameController!.text;
-                  final client = StreamChat.of(context).client;
-                  final channel = client
-                      .channel('messaging', id: Uuid().v4(), extraData: {
-                    'members': [
-                      client.state.user!.id,
-                      ..._selectedUsers.map((e) => e.id),
-                    ],
-                    'name': groupName,
-                  });
-                  await channel.watch();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.channel_page,
-                    ModalRoute.withName(Routes.home),
-                    arguments: ChannelPageArgs(channel: channel),
-                  );
-                } catch (err) {
-                  _showErrorAlert();
-                }
-              },
+                      try {
+                        final groupName = _groupNameController!.text;
+                        final client = StreamChat.of(context).client;
+                        final channel = client
+                            .channel('messaging', id: Uuid().v4(), extraData: {
+                          'members': [
+                            client.state.user!.id,
+                            ..._selectedUsers.map((e) => e.id),
+                          ],
+                          'name': groupName,
+                        });
+                        await channel.watch();
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.channel_page,
+                          ModalRoute.withName(Routes.home),
+                          arguments: ChannelPageArgs(channel: channel),
+                        );
+                      } catch (err) {
+                        _showErrorAlert();
+                      }
+                    },
             ),
           ],
         ),
@@ -184,7 +186,7 @@ class _ChannelNamePage extends State<ChannelNamePage> {
                     width: double.maxFinite,
                     decoration: BoxDecoration(
                       gradient:
-                      StreamChatTheme.of(context).colorTheme.bgGradient,
+                          StreamChatTheme.of(context).colorTheme.bgGradient,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -207,9 +209,7 @@ class _ChannelNamePage extends State<ChannelNamePage> {
                         itemCount: _selectedUsers.length + 1,
                         separatorBuilder: (_, __) => Container(
                           height: 1,
-                          color: StreamChatTheme.of(context)
-                              .colorTheme
-                              .borders,
+                          color: StreamChatTheme.of(context).colorTheme.borders,
                         ),
                         itemBuilder: (_, index) {
                           if (index == _selectedUsers.length) {
@@ -280,9 +280,9 @@ class _ChannelNamePage extends State<ChannelNamePage> {
       context: context,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16.0),
-            topRight: Radius.circular(16.0),
-          )),
+        topLeft: Radius.circular(16.0),
+        topRight: Radius.circular(16.0),
+      )),
       builder: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -309,8 +309,10 @@ class _ChannelNamePage extends State<ChannelNamePage> {
               height: 36.0,
             ),
             Container(
-              color:
-              StreamChatTheme.of(context).colorTheme.textHighEmphasis.withOpacity(.08),
+              color: StreamChatTheme.of(context)
+                  .colorTheme
+                  .textHighEmphasis
+                  .withOpacity(.08),
               height: 1.0,
             ),
             Row(

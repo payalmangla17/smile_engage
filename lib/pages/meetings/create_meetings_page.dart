@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jitsi_meet/jitsi_meet.dart';
 
 import 'package:smile_engage/config/constants.dart';
@@ -26,7 +28,15 @@ class CreateMeetingsPage extends StatefulWidget {
         ..videoMuted = true
         ..featureFlags.addAll(featureFlags);
 
-      await JitsiMeet.joinMeeting(options);
+      await JitsiMeet.joinMeeting(options,
+      listener: JitsiMeetingListener(//todo to check
+        onConferenceTerminated: (meesage) {
+          Fluttertoast.showToast(msg: "Meeting has been ended by host!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,);
+
+        },
+      ));
     } catch (e) {
       print("Error: $e");
     }
@@ -49,7 +59,9 @@ class _CreateMeetingsPageState extends State<CreateMeetingsPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        brightness: Theme.of(context).brightness,
+        systemOverlayStyle: Theme.of(context).brightness == Brightness.dark
+            ? SystemUiOverlayStyle.light
+            : SystemUiOverlayStyle.dark,
         elevation: 1,
         centerTitle: true,
         title: Text(

@@ -7,8 +7,10 @@ import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/size_config.dart';
 import 'package:smile_engage/pages/authentication/components/form_error.dart';
 import 'package:smile_engage/pages/authentication/register/register_page.dart';
+import 'package:smile_engage/pages/authentication/user_info_page.dart';
 import 'package:smile_engage/pages/models/register_model.dart';
 import 'package:smile_engage/pages/ui/default_button.dart';
+import 'package:smile_engage/pages/ui/keyboard.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 
 
@@ -225,6 +227,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           email: currUser.email,
           password: currUser.password,
           );
+    String uid=userCredential.user!.uid;
     dbRef.push().set({
       "email": currUser.email,
       "password":currUser.password,
@@ -236,6 +239,23 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
     }
 
-    ).then((user) =>  Navigator.popAndPushNamed(context, Routes.home,arguments:userCredential));//TODO otp screen
+    ).then((user) => {
+      if (uid != null) {
+        print(uid),
+        KeyboardUtil.hideKeyboard(context),
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>
+                UserInfoPage(
+                  user: FirebaseAuth.instance.currentUser as User,
+                ),
+          ),
+        )
+      }
+      else
+        {
+          FormError(errors: errors)
+        }
+    }); //Navigator.popAndPushNamed(context, Routes.home,arguments:userCredential));//TODO otp screen
   }
 }

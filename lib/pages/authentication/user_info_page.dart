@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as Firebase;
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smile_engage/config/constants.dart';
@@ -31,11 +32,49 @@ class UserInfoPage extends StatefulWidget {
 class _UserInfoPageState extends State<UserInfoPage> {
   late Firebase.User _user;
   bool _isSigningOut = false;
+  //late Map<dynamic, dynamic> values;
 
+  final DatabaseReference dbRef =
+  FirebaseDatabase.instance.reference().child("users");
+  Map<String,dynamic>? getData(){
+    late Map<dynamic, dynamic> values;
+    dbRef.once().then((DataSnapshot snapshot){
+      //  var keys=snapshot.key;
+
+      values = snapshot.value;
+      // values.forEach((key,values) {
+      //   values[key]=values;
+      //   print(values["Email"]);
+      // });
+      _user.updateDisplayName(values['firstName']+' '+values['lastName']);
+      _user.updatePhoneNumber(values['phoneNumber']);
+      return values;
+    });
+    return null;
+  }
   @override
   void initState() {
     _user = widget._user;
     print(_user);
+
+
+    // dbRef.once().then((DataSnapshot snapshot){
+    //   //  var keys=snapshot.key;
+    //
+    //   Map<dynamic,dynamic> values = snapshot.value;
+    //   values.forEach((key,values) {
+    //     //values[key]=values;
+    //     _user.updateDisplayName(values['firstName']+' '+values['lastName']);
+    //     _user.updatePhoneNumber(values['phoneNumber']);
+    //     print(values["Email"]);
+    //   });
+    //
+    // //  return values;
+    // });
+    _user.updateDisplayName("Hello");
+    _user.updatePhotoURL("https://github.com/payalmangla17/smile_engage/blob/master/assets/images/logo.png");
+    print(_user);
+  //  _user.displayName=values['firstName']+' '+values['lastName'];
     super.initState();
   }
 
@@ -44,14 +83,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-    //  backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
+      //  backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
       appBar: AppBar(
         elevation: 1,
         centerTitle: true,
         title: Text(
           'User Login',
           style: TextStyle(
-              //color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
+            //color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
               fontSize: 16.0),
         ),
         backgroundColor: appBlueColor,
@@ -93,17 +132,17 @@ class _UserInfoPageState extends State<UserInfoPage> {
               SizedBox(height: 16.0),
               Text(
                 'Welcome,',
-              //  style: StreamChatTheme.of(context).textTheme.title,
+                //  style: StreamChatTheme.of(context).textTheme.title,
+               ),
+              SizedBox(height: 8.0),
+              Text(
+                //"Hello",// todo
+                _user.displayName!,
+                style: TextStyle(
+                   color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
-              // SizedBox(height: 8.0),
-              // Text(
-              //   "Hello",// todo
-              //  // _user.displayName!,
-              //   style: TextStyle(
-              //      color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
-              //       fontSize: 20,
-              //       fontWeight: FontWeight.bold),
-              // ),
               SizedBox(height: 8.0),
               Text(
                 '( ${_user.email!} )',
@@ -123,12 +162,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       barrierDismissible: true,
                       context: context,
                       //barrierColor:
-                     // StreamChatTheme.of(context).colorTheme.overlay,
+                      // StreamChatTheme.of(context).colorTheme.overlay,
                       builder: (context) => Center(
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                          //  color: StreamChatTheme.of(context).colorTheme.barsBg,
+                            //  color: StreamChatTheme.of(context).colorTheme.barsBg,
                           ),
                           height: 100,
                           width: 100,
@@ -243,4 +282,5 @@ class _UserInfoPageState extends State<UserInfoPage> {
       ),
     );
   }
+
 }

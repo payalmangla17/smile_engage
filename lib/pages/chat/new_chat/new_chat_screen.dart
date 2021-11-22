@@ -137,7 +137,7 @@ class _NewChatPageState extends State<NewChatPage> {
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark,
         elevation: 0,
-        backgroundColor: appPurpleColor,
+        backgroundColor: appBlueColor,
         leading: const StreamBackButton(),
         title: Text(
           'New Chat',
@@ -147,9 +147,9 @@ class _NewChatPageState extends State<NewChatPage> {
         centerTitle: true,
       ),
       body: ConnectionStatusBuilder(
-        /*
-          Sets the Connection Status on the basis of the state of the server
-          * */
+
+        ///  Sets the Internet Connection Status on the basis of the state of the server
+
         statusBuilder: (context, status) {
           String statusString = '';
           bool showStatus = true;
@@ -252,8 +252,8 @@ class _NewChatPageState extends State<NewChatPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 8,
+                          vertical: 4,
+                          horizontal: 4,
                         ),
                         child: Text(
                             _isSearchActive
@@ -289,9 +289,7 @@ class _NewChatPageState extends State<NewChatPage> {
                                     _chipInputTextFieldState!.removeItem(user);
                                   }
                                 },
-                                pagination: const PaginationParams(
-                                  limit: 25,
-                                ),
+                                limit: 25,
                                 filter: Filter.and([
                                   if (_userNameQuery.isNotEmpty)
                                     Filter.autoComplete('name', _userNameQuery),
@@ -381,7 +379,7 @@ class NoUserMatch extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(24),
             child: StreamSvgIcon.search(
-              size: 96,
+              size: MediaQuery.of(context).size.height*0.3,
               color: appLightColor,
             ),
           ),
