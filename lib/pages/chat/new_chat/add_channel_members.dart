@@ -7,9 +7,8 @@ import 'package:smile_engage/pages/ui/search_text_field.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class AddChannelMembersPage extends StatefulWidget {
-  const AddChannelMembersPage({Key? key}) : super(key: key);
 
+class AddChannelMembersPage extends StatefulWidget {
   @override
   _AddChannelMembersPageState createState() => _AddChannelMembersPageState();
 }
@@ -143,7 +142,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                                   children: [
                                     UserAvatar(
                                       onlineIndicatorAlignment:
-                                          Alignment(0.9, 0.9),
+                                      Alignment(0.9, 0.9),
                                       user: user,
                                       showOnlineStatus: true,
                                       borderRadius: BorderRadius.circular(32),
@@ -207,7 +206,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                         width: double.maxFinite,
                         decoration: BoxDecoration(
                           gradient:
-                              StreamChatTheme.of(context).colorTheme.bgGradient,
+                          StreamChatTheme.of(context).colorTheme.bgGradient,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -251,7 +250,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                     filter: Filter.and([
                       if (_userNameQuery.isNotEmpty)
                         Filter.autoComplete('name', _userNameQuery),
-                      Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
+                      Filter.notEqual('id', StreamChat.of(context).user!.id),
                     ]),
                     sort: [
                       SortOption(
@@ -286,10 +285,10 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                                           .textTheme
                                           .footnote
                                           .copyWith(
-                                            color: StreamChatTheme.of(context)
-                                                .colorTheme
-                                                .textLowEmphasis,
-                                          ),
+                                        color: StreamChatTheme.of(context)
+                                            .colorTheme
+                                            .textLowEmphasis,
+                                      ),
                                     ),
                                   ],
                                 ),
