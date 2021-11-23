@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'package:smile_engage/config/constants.dart';
@@ -50,7 +51,15 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
     _controller?.dispose();
     super.dispose();
   }
+  int getCount(){
+    Map? data;
+    FirebaseDatabase.instance.reference().child('users').once().then((onValue) {
+       data = onValue.value;
 
+    });
+    int cnt = data!.length;
+    return cnt<25?cnt:25;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,11 +255,11 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                         });
                       }
                     },
-                    limit: 25,
+                    limit: 2,//todo
                     filter: Filter.and([
                       if (_userNameQuery.isNotEmpty)
                         Filter.autoComplete('name', _userNameQuery),
-                      Filter.notEqual('id', StreamChat.of(context).user!.id),
+                      Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
                     ]),
                     sort: [
                       SortOption(
@@ -307,6 +316,8 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
       ),
     );
   }
+
+  
 }
 
 class _HeaderDelegate extends SliverPersistentHeaderDelegate {

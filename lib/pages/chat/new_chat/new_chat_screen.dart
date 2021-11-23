@@ -46,6 +46,14 @@ class _NewChatPageState extends State<NewChatPage> {
 
   bool _showUserList = true;
 
+  Message? _quotedMessage;
+  void _reply(Message message) {
+    setState(() => _quotedMessage = message);
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      _messageInputFocusNode.requestFocus();
+    });
+  }
+
   void _userNameListener() {
     /*
     Sets the listener for the user name
@@ -60,7 +68,51 @@ class _NewChatPageState extends State<NewChatPage> {
       }
     });
   }
+  void createChannel(){
+    _messageInputFocusNode.addListener(() async {
+      if (_messageInputFocusNode.hasFocus && _selectedUsers.isNotEmpty) {
+        final chatState = StreamChat.of(context);
 
+        final res = await chatState.client.queryChannelsOnline(
+          state: false,
+          watch: false,
+          filter: Filter.raw(value: {
+            'members': [
+              ..._selectedUsers.map((e) => e.id),
+              chatState.currentUser!.id,
+            ],
+            'distinct': true,
+          }),
+          messageLimit: 0,
+          paginationParams: PaginationParams(
+            limit: 1,
+          ),
+        );
+
+        final _channelExisted = res.length == 1;
+        if (_channelExisted) {
+          channel = res.first;
+          await channel!.watch();
+        } else {
+          channel = chatState.client.channel(
+            'messaging',
+            extraData: {
+              'members': [
+                ..._selectedUsers.map((e) => e.id),
+                chatState.currentUser!.id,
+              ],
+            },
+          );
+          await channel!.create();
+        }
+
+        setState(() {
+          _showUserList = false;
+        });
+      }
+    });
+
+  }
   @override
   void initState() {
     super.initState();
@@ -109,6 +161,7 @@ class _NewChatPageState extends State<NewChatPage> {
               ],
             },
           );
+        //  await channel!.create();
         }
 
         setState(() {
@@ -270,6 +323,7 @@ class _NewChatPageState extends State<NewChatPage> {
                       ),
                     ),
                   Expanded(
+
                     child: _showUserList
                         ? GestureDetector(
                       behavior: HitTestBehavior.opaque,
@@ -289,7 +343,7 @@ class _NewChatPageState extends State<NewChatPage> {
                               _chipInputTextFieldState!.removeItem(user);
                             }
                           },
-                          limit: 25,
+                          limit: 2,// todo
                           filter: Filter.and([
                             if (_userNameQuery.isNotEmpty)
                               Filter.autoComplete('name', _userNameQuery),
@@ -342,8 +396,15 @@ class _NewChatPageState extends State<NewChatPage> {
                     ),
                   ),
                   MessageInput(
-                    focusNode: _messageInputFocusNode,
+                     focusNode: _messageInputFocusNode,
+                   //  quotedMessage: _quotedMessage,
+                   //  onQuotedMessageCleared: () {
+                   //    setState(() => _quotedMessage = null);
+                   //  },
+
                     preMessageSending: (message) async {
+                    //  createChannel();
+                      //await channel!.sendMessage(message);
                       await channel!.watch();
                       return message;
                     },

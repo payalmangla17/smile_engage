@@ -144,7 +144,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   },
                   messageBuilder: (context,details,messageList,defaultMessageWidget){
                     return defaultMessageWidget.copyWith(
-
+                      onReplyTap: _reply,
                       onShowMessage:(m,c)async{
                         final client=StreamChat.of(context).client;
                         final message=m;

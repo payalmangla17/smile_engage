@@ -53,7 +53,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
             'owner',
           ].contains(channel.state!.members
               .firstWhereOrNull(
-                  (m) => m.userId == channel.client.state.user!.id)
+                  (m) => m.userId == channel.client.state.currentUser!.id)
               ?.role))
             _buildDeleteListTile(),
         ],
@@ -62,6 +62,8 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
   }
 
   Widget _buildUserHeader() {
+    print("ahbd");
+    print(widget.user);
     return Material(
       color: appAccentIconColor,
       child: SafeArea(

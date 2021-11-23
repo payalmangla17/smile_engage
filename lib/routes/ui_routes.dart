@@ -26,6 +26,8 @@ class Routes{
   static const String ONBOARD1 = '/welcome_screen';
   static const String ONBOARD3 = '/video_screen';
   static const String ONBOARD2 = '/share_screen';
+  static const String channel_list = '/channel_list';
+
 
 
 }

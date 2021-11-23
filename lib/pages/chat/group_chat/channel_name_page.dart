@@ -136,7 +136,7 @@ class _ChannelNamePage extends State<ChannelNamePage> {
                         final channel = client
                             .channel('messaging', id: Uuid().v4(), extraData: {
                           'members': [
-                            client.state.user!.id,
+                            client.state.currentUser!.id,
                             ..._selectedUsers.map((e) => e.id),
                           ],
                           'name': groupName,
