@@ -303,7 +303,7 @@ class SharedOptionsTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => _SharedGroupsScreen(
-                    StreamChat.of(context).user, widget.user)));
+                    StreamChat.of(context).currentUser, widget.user)));
       },
     );
   }
