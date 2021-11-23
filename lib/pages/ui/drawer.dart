@@ -7,6 +7,7 @@ import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:smile_engage/services/authentication/authentication.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:recase/recase.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
     Key? key,
@@ -18,7 +19,7 @@ class LeftDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("usera");
+   // print("usera");
     print(user);
     //userName = user.name;
     return Drawer(
@@ -49,9 +50,9 @@ class LeftDrawer extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          "Hello\n"+ user.name.titleCase,
+                          "Hello,\n"+ user.name.titleCase,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -157,21 +158,21 @@ class LeftDrawer extends StatelessWidget {
                         fontSize: 14.5,
                       ),
                     ),
-                    // trailing: IconButton(
-                    //   icon: StreamSvgIcon.iconMoon(
-                    //     size: 24,
-                    //   ),
-                    //   color: StreamChatTheme.of(context).colorTheme.whiteSnow,
-                    //   onPressed: () async {
-                    //     final sp = await StreamingSharedPreferences.instance;
-                    //     sp.setInt(
-                    //       'theme',
-                    //       Theme.of(context).brightness == Brightness.dark
-                    //           ? 1
-                    //           : -1,
-                    //     );
-                    //   },
-                    // ),
+                    trailing: IconButton(
+                      icon: StreamSvgIcon.iconMoon(
+                        size: 24,
+                      ),
+                      color: StreamChatTheme.of(context).colorTheme.appBg,
+                      onPressed: () async {
+                        final sp = await StreamingSharedPreferences.instance;
+                        sp.setInt(
+                          'theme',
+                          Theme.of(context).brightness == Brightness.dark
+                              ? 1
+                              : -1,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
