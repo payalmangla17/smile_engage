@@ -75,7 +75,7 @@ class _ChannelMediaPageState extends State<ChannelMediaPage> {
           ),
         ),
         leading: const StreamBackButton(),
-        backgroundColor: appPurpleColor,
+        backgroundColor: appBlueColor,
       ),
       body: _buildMediaGrid(),
     );

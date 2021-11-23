@@ -77,7 +77,7 @@ class _ChannelFilePageState extends State<ChannelFilePage> {
             ),
           ),
         ),
-        backgroundColor: appPurpleColor,
+        backgroundColor: appBlueColor,
       ),
       body: _buildMediaGrid(),
     );
