@@ -81,7 +81,7 @@ class _ChannelPageState extends State<ChannelPage> {
         showTypingIndicator: true,
         onImageTap: () async {
           var channel = StreamChannel.of(context).channel;
-          if (channel.memberCount == 2 && channel.isDistinct) {
+          if (channel.memberCount==2  && channel.isDistinct) {
             final currentUser = StreamChat.of(context).currentUser;
             final otherUser = channel.state!.members.firstWhereOrNull(
                   (element) => element.user!.id != currentUser!.id,
@@ -134,10 +134,37 @@ class _ChannelPageState extends State<ChannelPage> {
                   highlightInitialMessage: widget.highlightInitialMessage,
                   onMessageSwiped: _reply,
                   //  onReplyTap: _reply,// todo - check
+
+
+
                   threadBuilder: (_, parentMessage) {
                     return ThreadPage(
                       parent: parentMessage,
                     );
+                  },
+                  messageBuilder: (context,details,messageList,defaultMessageWidget){
+                    return defaultMessageWidget.copyWith(
+
+                      onShowMessage:(m,c)async{
+                        final client=StreamChat.of(context).client;
+                        final message=m;
+                        final channel=client.channel(
+                          c.type,
+                          id:c.id,
+                        );
+                        if(channel.state==null){
+                          await channel.watch();
+                        }
+                        Navigator.pushReplacementNamed(
+                          context,
+                          Routes.channel_page,
+                          arguments:ChannelPageArgs(
+                            channel:channel,
+                            initialMessage:message,
+                          ),
+                        );
+                      },
+                      showThreadReplyIndicator:false,);
                   },
                   // TODO --see what happens
                   // onShowMessage: (m, c) async {
