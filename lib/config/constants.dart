@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smile_engage/config/size_config.dart';
 
-const appAccentColor = Color(0xFF6C63FF);
+const appAccentColor = Color(0xFF639CFF);
 const appLightColor = Color(0xFF9EB7E8);
 const appPurpleColor = Color(0xFF6C63FF);
 var appAccentIconColor = Color(0xFF6397FF).withOpacity(0.8);
