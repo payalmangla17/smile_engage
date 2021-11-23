@@ -121,9 +121,11 @@ class AppRoutes {
               );
             });
       case Routes.new_chat:
-        return MaterialPageRoute(builder: (_) {
-          return NewChatPage();
-        });
+        return MaterialPageRoute(
+            settings: const RouteSettings(name: Routes.new_chat),
+            builder: (_) {
+              return NewChatPage();
+            });
       case Routes.new_channel:
         return MaterialPageRoute(
             settings: const RouteSettings(name: Routes.new_channel),
