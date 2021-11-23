@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/pages/chat/widgets/media_option_tile.dart';
@@ -80,7 +81,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
     var channel = StreamChannel.of(context);
 
     return StreamBuilder<List<Member>>(
-      /*
+        /*
           * Creates a new StreamBuilder that builds itself based on the latest
           * snapshot of interaction with the specified stream and whose
           * build strategy is given by builder.
@@ -92,28 +93,31 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
               color: StreamChatTheme.of(context).colorTheme.disabled,
               child: Center(
                   child: CircularProgressIndicator(
-                    color: appAccentColor,
-                  )),
+                color: appAccentColor,
+              )),
             );
           }
 
           var userMember = snapshot.data!.firstWhereOrNull(
-                (e) => e.user!.id == StreamChat.of(context).user!.id,
+            (e) => e.user!.id == StreamChat.of(context).currentUser!.id,
           );
           var isOwner = userMember?.role == 'owner';
 
           return Scaffold(
             backgroundColor: StreamChatTheme.of(context).colorTheme.appBg,
             appBar: AppBar(
-              brightness: Theme.of(context).brightness,
+              systemOverlayStyle:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? SystemUiOverlayStyle.light
+                      : SystemUiOverlayStyle.dark,
               elevation: 1.0,
               toolbarHeight: 56.0,
-              backgroundColor: appPurpleColor,
+              backgroundColor: appBlueColor,
               leading: StreamBackButton(),
               title: Column(
                 children: [
                   StreamBuilder<ChannelState>(
-                    /*
+                      /*
           * Creates a new StreamBuilder that builds itself based on the latest
           * snapshot of interaction with the specified stream and whose
           * build strategy is given by builder.
@@ -124,8 +128,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                           return Text(
                             'Loading...',
                             style: TextStyle(
-                              color:
-                              StreamChatTheme.of(context).colorTheme.textHighEmphasis,
+                              color: StreamChatTheme.of(context)
+                                  .colorTheme
+                                  .textHighEmphasis,
                               fontSize: 16,
                             ),
                             maxLines: 1,
@@ -141,7 +146,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                             maxFontSize: 16.0,
                           )!,
                           style: TextStyle(
-                            color: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
+                            color: StreamChatTheme.of(context)
+                                .colorTheme
+                                .textHighEmphasis,
                             fontSize: 16,
                           ),
                           maxLines: 1,
@@ -153,7 +160,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                   ),
                   Text(
                     '${channel.channel.memberCount} Members, '
-                        '${snapshot.data?.where((e) => e.user!.online).length ?? 0} Online',
+                    '${snapshot.data?.where((e) => e.user!.online).length ?? 0} Online',
                     style: TextStyle(
                       color: StreamChatTheme.of(context)
                           .colorTheme
@@ -222,7 +229,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
               child: InkWell(
                 onTap: () {
                   final userMember = groupMembers.firstWhereOrNull(
-                        (e) => e.user!.id == StreamChat.of(context).user!.id,
+                    (e) => e.user!.id == StreamChat.of(context).user!.id,
                   );
                   _showUserInfoModal(member.user, userMember?.role == 'owner');
                 },
@@ -248,7 +255,8 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                               children: [
                                 Text(
                                   member.user!.name,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   height: 1.0,
@@ -279,9 +287,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                       ),
                       Container(
                         height: 1.0,
-                        color: StreamChatTheme.of(context)
-                            .colorTheme
-                            .disabled,
+                        color: StreamChatTheme.of(context).colorTheme.disabled,
                       ),
                     ],
                   ),
@@ -334,8 +340,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                     ),
                     Container(
                       height: 1.0,
-                      color:
-                      StreamChatTheme.of(context).colorTheme.disabled,
+                      color: StreamChatTheme.of(context).colorTheme.disabled,
                     ),
                   ],
                 ),
@@ -372,17 +377,18 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
               child: TextField(
                 focusNode: _focusNode,
                 controller: _nameController,
-                cursorColor: StreamChatTheme.of(context).colorTheme.textHighEmphasis,
+                cursorColor:
+                    StreamChatTheme.of(context).colorTheme.textHighEmphasis,
                 decoration: InputDecoration.collapsed(
                     hintText: 'Add a group name',
                     hintStyle: StreamChatTheme.of(context)
                         .textTheme
                         .bodyBold
                         .copyWith(
-                        color: StreamChatTheme.of(context)
-                            .colorTheme
-                            .textHighEmphasis
-                            .withOpacity(0.5))),
+                            color: StreamChatTheme.of(context)
+                                .colorTheme
+                                .textHighEmphasis
+                                .withOpacity(0.5))),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   height: 0.82,
@@ -390,7 +396,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
               ),
             ),
             if (channelName != _nameController!.text.trim())
-            // Trims the channel name incase string length is long
+              // Trims the channel name incase string length is long
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -468,27 +474,27 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
               text: 'Mute Group',
               trailingWidget: snapshot.data == null
                   ? CircularProgressIndicator(
-                color: appAccentColor,
-              )
+                      color: appAccentColor,
+                    )
                   : ValueListenableBuilder<bool?>(
-                valueListenable: mutedBool,
-                builder: (context, value, _) {
-                  return CupertinoSwitch(
-                    // Sliding switch
-                    activeColor: appAccentIconColor,
-                    value: value!,
-                    onChanged: (val) {
-                      mutedBool.value = val;
+                      valueListenable: mutedBool,
+                      builder: (context, value, _) {
+                        return CupertinoSwitch(
+                          // Sliding switch
+                          activeColor: appAccentIconColor,
+                          value: value!,
+                          onChanged: (val) {
+                            mutedBool.value = val;
 
-                      if (snapshot.data!) {
-                        channel.channel.unmute();
-                      } else {
-                        channel.channel.mute();
-                      }
-                    },
-                  );
-                },
-              ),
+                            if (snapshot.data!) {
+                              channel.channel.unmute();
+                            } else {
+                              channel.channel.mute();
+                            }
+                          },
+                        );
+                      },
+                    ),
             );
           },
         ),
@@ -572,7 +578,8 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                             return LayoutBuilder(
                               builder: (context, viewportConstraints) {
                                 return SingleChildScrollView(
-                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
                                   child: ConstrainedBox(
                                     constraints: BoxConstraints(
                                       minHeight: viewportConstraints.maxHeight,
@@ -727,7 +734,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         size: 20.0,
                       ),
                       'View info',
-                          () async {
+                      () async {
                         var client = StreamChat.of(context).client;
 
                         var c = client.channel('messaging', extraData: {
@@ -761,7 +768,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         size: 24.0,
                       ),
                       'Message',
-                          () async {
+                      () async {
                         var client = StreamChat.of(context).client;
 
                         var c = client.channel('messaging', extraData: {
@@ -790,8 +797,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                     _buildModalListTile(
                         context,
                         StreamSvgIcon.userRemove(
-                          color:
-                          StreamChatTheme.of(context).colorTheme.accentError,
+                          color: StreamChatTheme.of(context)
+                              .colorTheme
+                              .accentError,
                           size: 24.0,
                         ),
                         'Remove From Group', () async {
@@ -801,7 +809,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         title: 'Remove member',
                         okText: 'REMOVE',
                         question:
-                        'Are you sure you want to remove this member?',
+                            'Are you sure you want to remove this member?',
                         cancelText: 'CANCEL',
                       );
 
@@ -809,7 +817,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         await channel.removeMembers([user.id]);
                       }
                       Navigator.pop(context);
-                    }, color: StreamChatTheme.of(context).colorTheme.accentError),
+                    },
+                        color:
+                            StreamChatTheme.of(context).colorTheme.accentError),
                   _buildModalListTile(
                       context,
                       StreamSvgIcon.closeSmall(
@@ -891,7 +901,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                     child: Text(
                       title,
                       style:
-                      TextStyle(color: color, fontWeight: FontWeight.bold),
+                          TextStyle(color: color, fontWeight: FontWeight.bold),
                     ),
                   )
                 ],
@@ -904,16 +914,16 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
   }
 
   String? _getChannelName(
-      double width, {
-        List<Member>? members,
-        required Map extraData,
-        double? maxFontSize,
-      }) {
+    double width, {
+    List<Member>? members,
+    required Map extraData,
+    double? maxFontSize,
+  }) {
     String? title;
     var client = StreamChat.of(context);
     if (extraData['name'] == null) {
       final otherMembers =
-      members!.where((member) => member.user!.id != client.user!.id);
+          members!.where((member) => member.user!.id != client.user!.id);
       if (otherMembers.isNotEmpty) {
         final maxWidth = width;
         final maxChars = maxWidth / maxFontSize!;
@@ -929,7 +939,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
 
         final exceedingMembers = otherMembers.length - currentMembers.length;
         title =
-        '${currentMembers.map((e) => e.user!.name).join(', ')} ${exceedingMembers > 0 ? '+ $exceedingMembers' : ''}';
+            '${currentMembers.map((e) => e.user!.name).join(', ')} ${exceedingMembers > 0 ? '+ $exceedingMembers' : ''}';
       } else {
         title = 'No title';
       }
@@ -968,8 +978,10 @@ class LeaveOptionTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: StreamSvgIcon.userRemove(
           size: 24.0,
-          color:
-          StreamChatTheme.of(context).colorTheme.accentError.withOpacity(0.5),
+          color: StreamChatTheme.of(context)
+              .colorTheme
+              .accentError
+              .withOpacity(0.5),
         ),
       ),
       trailing: Container(

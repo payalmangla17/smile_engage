@@ -133,7 +133,7 @@ class _ChannelPageState extends State<ChannelPage> {
                   initialAlignment: widget.initialAlignment,
                   highlightInitialMessage: widget.highlightInitialMessage,
                   onMessageSwiped: _reply,
-                //  onReplyTap: _reply,// todo - check
+                  //  onReplyTap: _reply,// todo - check
                   threadBuilder: (_, parentMessage) {
                     return ThreadPage(
                       parent: parentMessage,
@@ -164,15 +164,15 @@ class _ChannelPageState extends State<ChannelPage> {
                 ),
 
                 Positioned(
-                  //sets the video icon for the call functionality
-                  top: size.height * 0.765 + 5,
+                  ///sets the video icon for the call functionality
+                  top: size.height * 0.745 ,
                   left: -15,
 
                   child: Container(
                     height: 38,
                     child: RawMaterialButton(
                       elevation: 3,
-                      fillColor: appPurpleColor,
+                      fillColor: appBlueColor,
                       shape: CircleBorder(),
                       onPressed: () {
                         log(channel.id.toString());
