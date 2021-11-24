@@ -14,10 +14,10 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../chat_info_page.dart';
 import 'channel_page.dart';
-/*
-This page renders the information screen for the channel
-and sets the tiles for files, media screen and other group related options
-*/
+
+///This page renders the information screen for the channel
+///and sets the tiles for files, media screen and other group related options
+
 
 class ChannelInfoPage extends StatefulWidget {
   final MessageThemeData messageTheme;
@@ -229,7 +229,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
               child: InkWell(
                 onTap: () {
                   final userMember = groupMembers.firstWhereOrNull(
-                    (e) => e.user!.id == StreamChat.of(context).user!.id,
+                    (e) => e.user!.id == StreamChat.of(context).currentUser!.id,
                   );
                   _showUserInfoModal(member.user, userMember?.role == 'owner');
                 },
@@ -516,9 +516,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
     var channel = StreamChannel.of(context).channel;
 
     showDialog(
-      /*Displays a Material dialog above the current contents of the app, with Material entrance
-        and exit animations, modal barrier color, and modal barrier behavior
-      */
+      /// when clicking on add new user inside the group
+      ///Displays a Material dialog above the current contents of the app, with Material entrance
+      ///  and exit animations, modal barrier color, and modal barrier behavior
       useRootNavigator: false,
       context: context,
       barrierColor: StreamChatTheme.of(context).colorTheme.overlay,
@@ -542,7 +542,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         child: _buildTextInputSection(modalSetState),
                       ),
                       Expanded(
+
                         child: UserListView(
+
                           selectedUsers: {},
                           onUserTap: (user, _) async {
                             _searchController!.clear();
@@ -551,9 +553,9 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                             Navigator.pop(context);
                             setState(() {});
                           },
-                          crossAxisCount: 4,
+                          crossAxisCount: 2,
                           pagination: PaginationParams(
-                            limit: 25,
+                            limit: 2,// todo set limit to no of users
                           ),
                           filter: Filter.and(
                             [
@@ -561,7 +563,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                               if (_searchController!.text.isNotEmpty)
                                 Filter.autoComplete('name', _userNameQuery),
                               Filter.notIn('id', [
-                                StreamChat.of(context).user!.id,
+                                StreamChat.of(context).currentUser!.id,
                                 ...channel.state!.members
                                     .map<String?>(((e) => e.userId))
                                     .whereType<String>(),
@@ -726,7 +728,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                       ),
                     ),
                   ),
-                  if (StreamChat.of(context).user!.id != user.id)
+                  if (StreamChat.of(context).currentUser!.id != user.id)
                     _buildModalListTile(
                       context,
                       StreamSvgIcon.user(
@@ -740,7 +742,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         var c = client.channel('messaging', extraData: {
                           'members': [
                             user.id,
-                            StreamChat.of(context).user!.id,
+                            StreamChat.of(context).currentUser!.id,
                           ],
                         });
 
@@ -760,7 +762,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         );
                       },
                     ),
-                  if (StreamChat.of(context).user!.id != user.id)
+                  if (StreamChat.of(context).currentUser!.id != user.id)
                     _buildModalListTile(
                       context,
                       StreamSvgIcon.message(
@@ -774,7 +776,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                         var c = client.channel('messaging', extraData: {
                           'members': [
                             user.id,
-                            StreamChat.of(context).user!.id,
+                            StreamChat.of(context).currentUser!.id,
                           ],
                         });
 
@@ -792,7 +794,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                       },
                     ),
                   if (!channel.isDistinct &&
-                      StreamChat.of(context).user!.id != user.id &&
+                      StreamChat.of(context).currentUser!.id != user.id &&
                       isUserAdmin)
                     _buildModalListTile(
                         context,
@@ -923,7 +925,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
     var client = StreamChat.of(context);
     if (extraData['name'] == null) {
       final otherMembers =
-          members!.where((member) => member.user!.id != client.user!.id);
+          members!.where((member) => member.user!.id != client.currentUser!.id);
       if (otherMembers.isNotEmpty) {
         final maxWidth = width;
         final maxChars = maxWidth / maxFontSize!;

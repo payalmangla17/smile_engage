@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'package:smile_engage/config/constants.dart';
@@ -7,9 +8,8 @@ import 'package:smile_engage/pages/ui/search_text_field.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class AddChannelMembersPage extends StatefulWidget {
-  const AddChannelMembersPage({Key? key}) : super(key: key);
 
+class AddChannelMembersPage extends StatefulWidget {
   @override
   _AddChannelMembersPageState createState() => _AddChannelMembersPageState();
 }
@@ -51,7 +51,15 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
     _controller?.dispose();
     super.dispose();
   }
+  int getCount(){
+    Map? data;
+    FirebaseDatabase.instance.reference().child('users').once().then((onValue) {
+       data = onValue.value;
 
+    });
+    int cnt = data!.length;
+    return cnt<25?cnt:25;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,7 +151,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                                   children: [
                                     UserAvatar(
                                       onlineIndicatorAlignment:
-                                          Alignment(0.9, 0.9),
+                                      Alignment(0.9, 0.9),
                                       user: user,
                                       showOnlineStatus: true,
                                       borderRadius: BorderRadius.circular(32),
@@ -207,7 +215,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                         width: double.maxFinite,
                         decoration: BoxDecoration(
                           gradient:
-                              StreamChatTheme.of(context).colorTheme.bgGradient,
+                          StreamChatTheme.of(context).colorTheme.bgGradient,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -247,7 +255,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                         });
                       }
                     },
-                    limit: 25,
+                    limit: 2,//todo
                     filter: Filter.and([
                       if (_userNameQuery.isNotEmpty)
                         Filter.autoComplete('name', _userNameQuery),
@@ -286,10 +294,10 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                                           .textTheme
                                           .footnote
                                           .copyWith(
-                                            color: StreamChatTheme.of(context)
-                                                .colorTheme
-                                                .textLowEmphasis,
-                                          ),
+                                        color: StreamChatTheme.of(context)
+                                            .colorTheme
+                                            .textLowEmphasis,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -308,6 +316,8 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
       ),
     );
   }
+
+  
 }
 
 class _HeaderDelegate extends SliverPersistentHeaderDelegate {

@@ -64,7 +64,7 @@ class _PinnedMessagesPageState extends State<PinnedMessagesPage> {
           ),
         ),
         leading: StreamBackButton(),
-        backgroundColor: appPurpleColor,
+        backgroundColor: appBlueColor,
       ),
       body: _buildMediaGrid(),
     );

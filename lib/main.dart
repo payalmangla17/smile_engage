@@ -49,6 +49,7 @@ class _MyAppState extends State<MyApp>
       // ?? null-aware operator which returns the expression on its left
       // unless that expression’s value is null
       logLevel: Level.INFO,
+      //connectTimeout: Duration(milliseconds: 1000000000000000),
     )..chatPersistenceClient = StreamApi.chatPersistentClient;
     // shorthand setter for chatPersistentClient
 

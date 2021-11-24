@@ -22,19 +22,20 @@ import 'package:smile_engage/pages/meetings/join_meetings_page.dart';
 import 'package:smile_engage/pages/meetings/meetings_page.dart';
 import 'package:smile_engage/pages/models/register_model.dart';
 import 'package:smile_engage/pages/page_viewer/features.dart';
+import 'package:smile_engage/services/stream_chat/chat_list.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-import '../welcome_screen.dart';
+//import '../welcome_screen.dart';
 import 'ui_routes.dart';
 
 class AppRoutes {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     switch (settings.name) {
-      case Routes.welcome_screen:
-        return MaterialPageRoute(builder: (_) {
-          return WelcomeScreen();
-        });
+      // case Routes.welcome_screen:
+      //   return MaterialPageRoute(builder: (_) {
+      //     return WelcomeScreen();
+      //   });
       case Routes.features:
         return MaterialPageRoute(builder: (_) {
           return Features();
@@ -168,25 +169,31 @@ class AppRoutes {
             builder: (context) {
               return ChatsHomePage();
             });
+      case Routes.channel_list:
+        return MaterialPageRoute(
+            settings: const RouteSettings(name: Routes.channel_list),
+            builder: (context) {
+              return ChannelList();
+            });
 
-      case Routes.ONBOARD1:
-        return MaterialPageRoute(
-            settings: const RouteSettings(name: Routes.new_chat),
-            builder: (_) {
-              return WelcomeScreen();
-            });
-      case Routes.ONBOARD2:
-        return MaterialPageRoute(
-            settings: const RouteSettings(name: Routes.new_chat),
-            builder: (_) {
-              return WelcomeScreen();
-            });
-      case Routes.ONBOARD3:
-        return MaterialPageRoute(
-            settings: const RouteSettings(name: Routes.new_chat),
-            builder: (_) {
-              return WelcomeScreen();
-            });
+    // case Routes.ONBOARD1:
+      //   return MaterialPageRoute(
+      //       settings: const RouteSettings(name: Routes.new_chat),
+      //       builder: (_) {
+      //         return WelcomeScreen();
+      //       });
+      // case Routes.ONBOARD2:
+      //   return MaterialPageRoute(
+      //       settings: const RouteSettings(name: Routes.new_chat),
+      //       builder: (_) {
+      //         return WelcomeScreen();
+      //       });
+      // case Routes.ONBOARD3:
+      //   return MaterialPageRoute(
+      //       settings: const RouteSettings(name: Routes.new_chat),
+      //       builder: (_) {
+      //         return WelcomeScreen();
+      //       });
     }
   }
 }

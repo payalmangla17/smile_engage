@@ -5,10 +5,10 @@ import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/pages/chat/group_chat/channel_file_page.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-/*
-Option Tile Widgets for info screen of channels and private chats.
-Generalised and Modular Tiles implemented
-*/
+
+///Option Tile Widgets for info screen of channels and private chats.
+///Generalised and Modular Tiles implemented
+
 
 class FilesOptionTile extends StatelessWidget {
   const FilesOptionTile({
