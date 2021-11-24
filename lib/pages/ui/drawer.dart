@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smile_engage/config/constants.dart';
+import 'package:smile_engage/pages/home/developer_info.dart';
 import 'package:smile_engage/routes/app_routes.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:smile_engage/services/authentication/authentication.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:recase/recase.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({
     Key? key,
@@ -19,7 +21,7 @@ class LeftDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   // print("usera");
+    // print("usera");
     print(user);
     //userName = user.name;
     return Drawer(
@@ -50,7 +52,7 @@ class LeftDrawer extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 16.0),
                         child: Text(
-                          "Hello,\n"+ user.name.titleCase,
+                          "Hello,\n" + user.name.titleCase,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -112,26 +114,41 @@ class LeftDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
-                // color: StreamChatTheme.of(context)
-                //     .colorTheme
-                //     .black
-                //     .withOpacity(0.3),
-                thickness: 0.5,
-                height: 20,
+              ListTile(
+                leading: StreamSvgIcon.user(
+                  color: appAccentColor.withOpacity(.8),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => DeveloperInfo()));
+                },
+                title: Text(
+                  'Developer Info',
+                  style: TextStyle(
+                    fontSize: 14.5,
+                  ),
+                ),
               ),
-              Text(
-                'Developed by Payal Mangla',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10.5, color: Colors.grey),
-              ),
-              Divider(
-                //  color: StreamChatTheme.of(context).colorTheme.overlay.withAlpha(1)
-
-                //   .withOpacity(0.3),
-                thickness: 0.5,
-                height: 20,
-              ),
+              // Divider(
+              //   // color: StreamChatTheme.of(context)
+              //   //     .colorTheme
+              //   //     .black
+              //   //     .withOpacity(0.3),
+              //   thickness: 0.5,
+              //   height: 20,
+              // ),
+              // Text(
+              //   'Developed by Payal Mangla',
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(fontSize: 10.5, color: Colors.grey),
+              // ),
+              // Divider(
+              //   //  color: StreamChatTheme.of(context).colorTheme.overlay.withAlpha(1)
+              //
+              //   //   .withOpacity(0.3),
+              //   thickness: 0.5,
+              //   height: 20,
+              // ),
               Expanded(
                 child: Container(
                   alignment: Alignment.bottomCenter,
@@ -140,7 +157,7 @@ class LeftDrawer extends StatelessWidget {
                       Navigator.pop(context);
                       // TODO LOGOUT FUNCTIONALITY
                       final secureStorage = FlutterSecureStorage();
-                       await secureStorage.deleteAll();
+                      await secureStorage.deleteAll();
 
                       final client = StreamChat.of(context).client;
                       client.disconnectUser();
