@@ -342,13 +342,9 @@ class _NewChatPageState extends State<NewChatPage> {
                               _chipInputTextFieldState
                                 ?..addItem(user)
                                 ..pauseItemAddition();
-                              print('abcd:$_selectedUsers');
 
-                          //    channel!.addMembers([user.id]);//TODO SEE IF MESSAGE INPUT WORKS
                             } else {
                               _chipInputTextFieldState!.removeItem(user);
-                           //   channel!.removeMembers([user.id]);
-
                             }
                           },
                           limit: 20,// todo

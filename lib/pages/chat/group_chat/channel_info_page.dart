@@ -544,7 +544,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                           },
                           crossAxisCount: 2,
 
-                          limit: 20,// todo set limit to no of users
+                          limit: 20,
 
                           filter: Filter.and(
                             [
