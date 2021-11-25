@@ -14,6 +14,12 @@ It implements the following features for an organisation:
     Connect with your team mates easily by just clicking a button in the chat window.
   - Collaborate
     Easily locate shared files, media in real time.
+    
+## Download Apk
+## Getting Started
+####Project Setup
+Please refer to the following [Guide]() for **_project setup_**.
+
   
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
