@@ -17,7 +17,8 @@ import 'package:smile_engage/routes/ui_routes.dart';
 
 class SignUpForm extends StatefulWidget {
   final int isAdmin;
-  SignUpForm(this.isAdmin);
+  final String code;
+  SignUpForm(this.isAdmin, this.code);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -33,7 +34,7 @@ class _SignUpFormState extends State<SignUpForm> {
   late String _userEmail;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final DatabaseReference dbRef =
-  FirebaseDatabase.instance.reference().child("users");
+  FirebaseDatabase.instance.reference().child("organisation").child("users");
   final TextEditingController emailTextEditController =
   new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
@@ -41,7 +42,7 @@ class _SignUpFormState extends State<SignUpForm> {
   new TextEditingController();
   final List<String?> errors = [];
   bool isAdmin=false;
-
+  String code="";
   String _errorMessage = '';
   //
   late RegisterModel userModel;
@@ -63,7 +64,7 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
 
     isAdmin=widget.isAdmin==0?true:false;
-
+    code=widget.code;
     return Form(
       key: _formKey,
       child: Column(
@@ -209,7 +210,7 @@ class _SignUpFormState extends State<SignUpForm> {
    // final routeArgs =
    // ModalRoute.of(context).settings.arguments as Map<String, int>;
 
-    userModel=RegisterModel(email: emailTextEditController.text, password: passwordController.text, isAdmin: isAdmin);
+    userModel=RegisterModel(email: emailTextEditController.text, password: passwordController.text, isAdmin: isAdmin, orgCode: code);
 
       Navigator.pushNamed(context, Routes.complete_profile_screen,arguments: userModel);
 

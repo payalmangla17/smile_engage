@@ -71,8 +71,9 @@ class _UserInfoPageState extends State<UserInfoPage> {
     //
     // //  return values;
     // });
-    _user.updateDisplayName("Hello");
-    _user.updatePhotoURL("https://github.com/payalmangla17/smile_engage/blob/master/assets/images/logo.png");
+   // _user.updateDisplayName("Hello");
+  //  _user.updatePhotoURL("https://github.com/payalmangla17/smile_engage/blob/master/assets/images/logo.png");
+    _user.updatePhotoURL(null);
     print(_user);
   //  _user.displayName=values['firstName']+' '+values['lastName'];
     super.initState();
