@@ -15,7 +15,7 @@ import 'channel_info_page.dart';
 
 /*
 This page renders the UI and integrates the BusinessLogic
-for the Chat thread page for Channels or Group Chats
+for the Chat thread page for individual or Group Chats
  in a channel of the Chat functionality
 powered by Stream Chat SDK.
 */
@@ -81,11 +81,13 @@ class _ChannelPageState extends State<ChannelPage> {
         showTypingIndicator: true,
         onImageTap: () async {
           var channel = StreamChannel.of(context).channel;
+
           if (channel.memberCount==2  && channel.isDistinct) {
             final currentUser = StreamChat.of(context).currentUser;
             final otherUser = channel.state!.members.firstWhereOrNull(
                   (element) => element.user!.id != currentUser!.id,
             );
+
             if (otherUser != null) {
               final pop = await Navigator.push(
                 context,
@@ -152,6 +154,7 @@ class _ChannelPageState extends State<ChannelPage> {
                           c.type,
                           id:c.id,
                         );
+
                         if(channel.state==null){
                           await channel.watch();
                         }
@@ -166,26 +169,7 @@ class _ChannelPageState extends State<ChannelPage> {
                       },
                       showThreadReplyIndicator:false,);
                   },
-                  // TODO --see what happens
-                  // onShowMessage: (m, c) async {
-                  //   final client = StreamChat.of(context).client;
-                  //   final message = m;
-                  //   final channel = client.channel(
-                  //     c.type,
-                  //     id: c.id,
-                  //   );
-                  //   if (channel.state == null) {
-                  //     await channel.watch();
-                  //   }
-                  //   Navigator.pushReplacementNamed(
-                  //     context,
-                  //     Routes.channel_page,
-                  //     arguments: ChannelPageArgs(
-                  //       channel: channel,
-                  //       initialMessage: message,
-                  //     ),
-                  //   );
-                  // },
+
                   pinPermissions: const ['owner', 'admin', 'member'],
                   // Sets the permissions only to privileged members
                 ),

@@ -11,7 +11,7 @@ import 'package:smile_engage/pages/chat/widgets/mute_option_tile.dart';
 import 'package:smile_engage/pages/chat/widgets/options_tile.dart';
 import 'package:smile_engage/pages/chat/widgets/pin_option_tile.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
+import '../../models/globals.dart' as globals;
 import '../chat_info_page.dart';
 import 'channel_page.dart';
 
@@ -201,7 +201,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
           );
         });
   }
-
+/// Build list of members in the group
   Widget _buildMembers(List<Member> members) {
     final groupMembers = members
       ..sort((prev, curr) {
@@ -352,7 +352,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
   }
 
   Widget _buildNameTile() {
-    /*Renders the tiles for each name*/
+    ///Renders the tiles for each member name of the group
     var channel = StreamChannel.of(context).channel;
     var channelName = (channel.extraData['name'] as String?) ?? '';
 
@@ -448,18 +448,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
 
     return Column(
       children: [
-        // OptionListTile(
-        //   title: 'Notifications',
-        //   leading: StreamSvgIcon.Icon_notification(
-        //     size: 24.0,
-        //     color: StreamChatTheme.of(context).colorTheme.black.withOpacity(0.5),
-        //   ),
-        //   trailing: CupertinoSwitch(
-        //     value: true,
-        //     onChanged: (val) {},
-        //   ),
-        //   onTap: () {},
-        // ),
+
         StreamBuilder<bool>(
           /*
           * Creates a new StreamBuilder that builds itself based on the latest
@@ -511,7 +500,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
       ],
     );
   }
-
+  /// build the widget to display the list of users not in the group
   void _buildAddUserModal(context) {
     var channel = StreamChannel.of(context).channel;
 
@@ -554,14 +543,15 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
                             setState(() {});
                           },
                           crossAxisCount: 2,
-                          pagination: PaginationParams(
-                            limit: 2,// todo set limit to no of users
-                          ),
+
+                          limit: 20,
+
                           filter: Filter.and(
                             [
-                              // Logic to filter on basis of search quety
+                              // Logic to filter on basis of search query(name, organisation code, not a member)
                               if (_searchController!.text.isNotEmpty)
                                 Filter.autoComplete('name', _userNameQuery),
+                              Filter.equal('orgCode', globals.organisationCode),
                               Filter.notIn('id', [
                                 StreamChat.of(context).currentUser!.id,
                                 ...channel.state!.members
@@ -679,7 +669,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
       ],
     );
   }
-
+  /// builds widget to show member info in a group on group info page
   void _showUserInfoModal(User? user, bool isUserAdmin) {
     var channel = StreamChannel.of(context).channel;
     final color = StreamChatTheme.of(context).colorTheme.barsBg;
@@ -845,7 +835,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
       ),
     );
   }
-
+  /// displays the info whether user is online or not
   Widget? _buildConnectedTitleState(User? user) {
     var alternativeWidget;
 
@@ -875,7 +865,7 @@ class _ChannelInfoPageState extends State<ChannelInfoPage> {
 
     return alternativeWidget;
   }
-
+  /// widget for modal list
   Widget _buildModalListTile(
       BuildContext context, Widget leading, String title, VoidCallback onTap,
       {Color? color}) {

@@ -7,7 +7,7 @@ import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/pages/ui/search_text_field.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
+import '../../models/globals.dart' as globals;
 
 class AddChannelMembersPage extends StatefulWidget {
   @override
@@ -255,10 +255,11 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                         });
                       }
                     },
-                    limit: 2,//todo
+                    limit: 20,
                     filter: Filter.and([
                       if (_userNameQuery.isNotEmpty)
                         Filter.autoComplete('name', _userNameQuery),
+                      Filter.equal('orgCode', globals.organisationCode),
                       Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
                     ]),
                     sort: [

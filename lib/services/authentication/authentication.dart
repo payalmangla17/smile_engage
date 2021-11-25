@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smile_engage/pages/authentication/user_info_page.dart';
 
 class Authentication {
@@ -17,15 +19,19 @@ class Authentication {
   }) async {
     WidgetsFlutterBinding.ensureInitialized();
     FirebaseApp firebaseApp = await Firebase.initializeApp();
-
+    String orgCode="";
     User? user = FirebaseAuth.instance.currentUser;
-
+    // FirebaseDatabase.instance.reference().child("organisation").orderByChild("users").orderByChild("email").equalTo(user!.email).onChildAdded.listen((event) {
+    //   orgCode=event.snapshot.key!;
+    //   print(orgCode);
+    // });
     if (user != null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) =>
               UserInfoPage(
                 user: user,
+                orgCode:""// new FlutterSecureStorage().read(key: 'organisationCode') as String,
               ),
         ),
       );

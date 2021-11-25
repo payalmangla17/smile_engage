@@ -7,7 +7,8 @@ import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/pages/chat/group_chat/channel_page.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-
+import '../../models/globals.dart' as globals;
+import '../thread.dart';
 import 'chips_input_text_field.dart';
 
 /*
@@ -68,54 +69,55 @@ class _NewChatPageState extends State<NewChatPage> {
       }
     });
   }
-  void createChannel(){
-    _messageInputFocusNode.addListener(() async {
-      if (_messageInputFocusNode.hasFocus && _selectedUsers.isNotEmpty) {
-        final chatState = StreamChat.of(context);
-
-        final res = await chatState.client.queryChannelsOnline(
-          state: false,
-          watch: false,
-          filter: Filter.raw(value: {
-            'members': [
-              ..._selectedUsers.map((e) => e.id),
-              chatState.currentUser!.id,
-            ],
-            'distinct': true,
-          }),
-          messageLimit: 0,
-          paginationParams: PaginationParams(
-            limit: 1,
-          ),
-        );
-
-        final _channelExisted = res.length == 1;
-        if (_channelExisted) {
-          channel = res.first;
-          await channel!.watch();
-        } else {
-          channel = chatState.client.channel(
-            'messaging',
-            extraData: {
-              'members': [
-                ..._selectedUsers.map((e) => e.id),
-                chatState.currentUser!.id,
-              ],
-            },
-          );
-          await channel!.create();
-        }
-
-        setState(() {
-          _showUserList = false;
-        });
-      }
-    });
-
-  }
+  // void createChannel(){
+  //   _messageInputFocusNode.addListener(() async {
+  //     if (_messageInputFocusNode.hasFocus && _selectedUsers.isNotEmpty) {
+  //       final chatState = StreamChat.of(context);
+  //
+  //       final res = await chatState.client.queryChannelsOnline(
+  //         state: false,
+  //         watch: false,
+  //         filter: Filter.raw(value: {
+  //           'members': [
+  //             ..._selectedUsers.map((e) => e.id),
+  //             chatState.currentUser!.id,
+  //           ],
+  //           'distinct': true,
+  //         }),
+  //         messageLimit: 0,
+  //         paginationParams: PaginationParams(
+  //           limit: 1,
+  //         ),
+  //       );
+  //
+  //       final _channelExisted = res.length == 1;
+  //       if (_channelExisted) {
+  //         channel = res.first;
+  //         await channel!.watch();
+  //       } else {
+  //         channel = chatState.client.channel(
+  //           'messaging',
+  //           extraData: {
+  //             'members': [
+  //               ..._selectedUsers.map((e) => e.id),
+  //               chatState.currentUser!.id,
+  //             ],
+  //           },
+  //         );
+  //         await channel!.create();
+  //       }
+  //
+  //       setState(() {
+  //         _showUserList = false;
+  //       });
+  //     }
+  //   });
+  //
+  // }
   @override
   void initState() {
     super.initState();
+    print(globals.organisationCode);
     channel = StreamChat.of(context).client.channel('messaging');
     _controller = TextEditingController()..addListener(_userNameListener);
 
@@ -142,7 +144,7 @@ class _NewChatPageState extends State<NewChatPage> {
             'distinct': true,
           }),
           messageLimit: 0,
-          paginationParams: PaginationParams(
+          paginationParams: const PaginationParams(
             limit: 1,
           ),
         );
@@ -161,9 +163,10 @@ class _NewChatPageState extends State<NewChatPage> {
               ],
             },
           );
-        //  await channel!.create();
+          channel!.create();
+         await channel!.watch();
         }
-
+       // await channel!.watch();
         setState(() {
           _showUserList = false;
         });
@@ -339,14 +342,16 @@ class _NewChatPageState extends State<NewChatPage> {
                               _chipInputTextFieldState
                                 ?..addItem(user)
                                 ..pauseItemAddition();
+
                             } else {
                               _chipInputTextFieldState!.removeItem(user);
                             }
                           },
-                          limit: 2,// todo
+                          limit: 20,// todo
                           filter: Filter.and([
                             if (_userNameQuery.isNotEmpty)
                               Filter.autoComplete('name', _userNameQuery),
+                            Filter.equal('orgCode', globals.organisationCode),
                             Filter.notEqual(
                                 'id', StreamChat.of(context).currentUser!.id),
                           ]),
@@ -395,7 +400,9 @@ class _NewChatPageState extends State<NewChatPage> {
                       },
                     ),
                   ),
+
                   MessageInput(
+
                      focusNode: _messageInputFocusNode,
                    //  quotedMessage: _quotedMessage,
                    //  onQuotedMessageCleared: () {
@@ -403,12 +410,11 @@ class _NewChatPageState extends State<NewChatPage> {
                    //  },
 
                     preMessageSending: (message) async {
-                    //  createChannel();
-                      //await channel!.sendMessage(message);
-                      await channel!.watch();
                       return message;
                     },
-                    onMessageSent: (m) {
+
+                    onMessageSent: (m) async {
+
                       Navigator.pushNamedAndRemoveUntil(
                         context,
                         Routes.channel_page,
@@ -456,7 +462,7 @@ class NoUserMatch extends StatelessWidget {
     );
   }
 }
-
+/// Create 'create a group' on new chat screen
 class CreateGroupTile extends StatelessWidget {
   const CreateGroupTile({
     Key? key,

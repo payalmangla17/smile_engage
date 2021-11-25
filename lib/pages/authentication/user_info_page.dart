@@ -7,6 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/custome_colors.dart';
 import 'package:smile_engage/pages/home/home_page.dart';
+import 'package:smile_engage/pages/models/globals.dart' as globals;
+import 'package:smile_engage/pages/models/globals.dart';
+import 'package:smile_engage/pages/models/globals.dart';
 import 'package:smile_engage/routes/app_routes.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:smile_engage/services/stream_chat/stream_chat_api.dart';
@@ -19,11 +22,12 @@ const kStreamUserId = 'STREAM_USER_ID';
 const kStreamToken = 'STREAM_TOKEN';
 
 class UserInfoPage extends StatefulWidget {
-  const UserInfoPage({Key? key, required Firebase.User user})
+  const UserInfoPage({Key? key, required Firebase.User user, required this.orgCode})
       : _user = user,
         super(key: key);
 
   final Firebase.User _user;
+  final String orgCode;
 
   @override
   _UserInfoPageState createState() => _UserInfoPageState();
@@ -33,49 +37,16 @@ class _UserInfoPageState extends State<UserInfoPage> {
   late Firebase.User _user;
   bool _isSigningOut = false;
   //late Map<dynamic, dynamic> values;
+   String orgCode="";
 
-  final DatabaseReference dbRef =
-  FirebaseDatabase.instance.reference().child("users");
-  Map<String,dynamic>? getData(){
-    late Map<dynamic, dynamic> values;
-    dbRef.once().then((DataSnapshot snapshot){
-      //  var keys=snapshot.key;
 
-      values = snapshot.value;
-      // values.forEach((key,values) {
-      //   values[key]=values;
-      //   print(values["Email"]);
-      // });
-      _user.updateDisplayName(values['firstName']+' '+values['lastName']);
-      _user.updatePhoneNumber(values['phoneNumber']);
-      return values;
-    });
-    return null;
-  }
   @override
   void initState() {
     _user = widget._user;
-    print(_user);
-
-
-    // dbRef.once().then((DataSnapshot snapshot){
-    //   //  var keys=snapshot.key;
-    //
-    //   Map<dynamic,dynamic> values = snapshot.value;
-    //   values.forEach((key,values) {
-    //     //values[key]=values;
-    //     _user.updateDisplayName(values['firstName']+' '+values['lastName']);
-    //     _user.updatePhoneNumber(values['phoneNumber']);
-    //     print(values["Email"]);
-    //   });
-    //
-    // //  return values;
-    // });
-   // _user.updateDisplayName("Hello");
-  //  _user.updatePhotoURL("https://github.com/payalmangla17/smile_engage/blob/master/assets/images/logo.png");
+    orgCode=widget.orgCode;
     _user.updatePhotoURL(null);
     print(_user);
-  //  _user.displayName=values['firstName']+' '+values['lastName'];
+
     super.initState();
   }
 
@@ -204,8 +175,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       extraData: {
                         'name': name,
                         'image': _user.photoURL,
+                        'orgCode':orgCode,
                       },
                     );
+                    globals.organisationCode=orgCode;
+                    print('org: ${globals.organisationCode}, $orgCode');
                     await client.connectUser(newUser, token);
 
                     //Serialisation of UserID
@@ -216,6 +190,10 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       key: kStreamApiKey,
                       value: StreamApi.kDefaultStreamApiKey,
                     );
+                    // secureStorage.write(
+                    //   key: globals.organisationCode,
+                    //   value: orgCode,
+                    // );
                     secureStorage.write(
                       key: kStreamUserId,
                       value: _eid,
