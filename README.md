@@ -1,8 +1,10 @@
-# smile_engage
+# Smile Engage
 
-A new Flutter project.
+A mobile application to collaborate with team for schools and organisations.
 
-## Getting Started
+[Features](https://github.com/payalmangla17/smile_engage/##Features)|
+
+## Features
 
 This project is a starting point for a Flutter application.
 
