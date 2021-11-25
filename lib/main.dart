@@ -88,7 +88,7 @@ class _MyAppState extends State<MyApp>
 
 
       },
-      //
+
     );
 
     super.initState();
@@ -135,8 +135,7 @@ class _MyAppState extends State<MyApp>
                 }
                 return [
                   AppRoutes.generateRoute(
-                    RouteSettings(
-                      // name: Routes.SIGN_IN,
+                    const RouteSettings(
                       name: Routes.intro,
                     ),
                   )!
@@ -149,7 +148,7 @@ class _MyAppState extends State<MyApp>
                   : Routes.home,
             ),
           ),
-     //   if (!animationCompleted) buildAnimation(),
+
       ],
     );
   }

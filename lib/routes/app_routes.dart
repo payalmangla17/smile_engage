@@ -57,6 +57,7 @@ class AppRoutes {
 
               return RegisterPage(
                 isAdmin: 1,
+                orgCode: "",
               );
             });
       case Routes.forget_password:

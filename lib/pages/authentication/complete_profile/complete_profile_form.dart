@@ -19,7 +19,7 @@ class CompleteProfileForm extends StatefulWidget {
 
    CompleteProfileForm(this.currUser) ;
   @override
-  _CompleteProfileFormState createState() => _CompleteProfileFormState();
+  _CompleteProfileFormState createState() => _CompleteProfileFormState(currUser);
 }
 
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
@@ -37,10 +37,12 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final TextEditingController addressController = new TextEditingController();
 
   final DatabaseReference dbRef =
-      FirebaseDatabase.instance.reference().child("users");
+      FirebaseDatabase.instance.reference().child("organisation");
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  late final RegisterModel currUser;
+  RegisterModel currUser;
   bool isAdmin=false;
+
+  _CompleteProfileFormState(this.currUser);
   //final  UUId uid;
   @override
   void initState() {
@@ -209,7 +211,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     Navigator.pop(context);
     return true;
   }
- 
+
 
   Future<void> deleteUser() async {
     try {
@@ -228,7 +230,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           password: currUser.password,
           );
     String uid=userCredential.user!.uid;
-    dbRef.push().set({
+    //final User? user=userCredential.user;
+    userCredential.user!.updateDisplayName(fNameController.text+" "+sNameController.text);
+    //userCredential.user!.updatePhoneNumber(mobilePhoneController.text );
+
+    dbRef.child(currUser.orgCode).child("users").push().set({
       "email": currUser.email,
       "password":currUser.password,
       "isAdmin":currUser.isAdmin,
