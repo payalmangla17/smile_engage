@@ -2,7 +2,7 @@
 
 A mobile application to collaborate with team for schools and organisations.
 
-[Features](https://github.com/payalmangla17/smile_engage/##Features)|
+[Features](https://github.com/payalmangla17/smile_engage/#Features)|
 
 ## Features
 
