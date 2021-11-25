@@ -231,9 +231,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           );
     String uid=userCredential.user!.uid;
     //final User? user=userCredential.user;
+    print(fNameController.text+" "+sNameController.text);
+
     userCredential.user!.updateDisplayName(fNameController.text+" "+sNameController.text);
     //userCredential.user!.updatePhoneNumber(mobilePhoneController.text );
-
+    await userCredential.user!.reload();
     dbRef.child(currUser.orgCode).child("users").push().set({
       "email": currUser.email,
       "password":currUser.password,
@@ -242,18 +244,23 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       "lastName": sNameController.text,
       "phoneNumber": mobilePhoneController.text,
       "address": addressController.text,
+      "orgCode": currUser.orgCode,
 
     }
 
     ).then((user) => {
       if (uid != null) {
-        print(uid),
+        print(fNameController.text+" "+sNameController.text),
+      //  FirebaseAuth.instance.currentUser!.then((val){updateDisplayName(fNameController.text+" "+sNameController.text)}),
+
+    print(uid),
         KeyboardUtil.hideKeyboard(context),
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) =>
                 UserInfoPage(
                   user: FirebaseAuth.instance.currentUser as User,
+                  orgCode: currUser.orgCode,
                 ),
           ),
         )

@@ -26,15 +26,15 @@ class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? code;
   bool? remember = false;
   late User user;
   final List<String?> errors = [];
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-
-  final DatabaseReference dbRef =
-  FirebaseDatabase.instance.reference().child("users");
+  final TextEditingController codeController = new TextEditingController();
+  int f=0;
   String _errorMessage = '';
 
   void addError({String? error}) {
@@ -64,47 +64,50 @@ class _SignFormState extends State<SignForm> {
 
     return Form(
 
-        key: _formKey,
-        child: Column(
+      key: _formKey,
+      child: Column(
 
+        children: [
+
+          buildEmailFormField(),
+          SizedBox(height: getProportionateScreenHeight(30),),
+          buildPasswordFormField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildCodeFormField(),
+          Row(
             children: [
 
-            buildEmailFormField(),
-            SizedBox(height: getProportionateScreenHeight(30),),
-            buildPasswordFormField(),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Row(
-              children: [
-
-                Checkbox(
-                  value: remember,
-                  activeColor: kPrimaryColor,
-                  onChanged: (value) {
-                    setState(() {
-                      remember = value;
-                    });
-                  },
+              Checkbox(
+                value: remember,
+                activeColor: kPrimaryColor,
+                onChanged: (value) {
+                  setState(() {
+                    remember = value;
+                  });
+                },
+              ),
+              Text("Remember me"),
+              Spacer(),
+              GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(
+                        context, Routes.forget_password),
+                child: Text(
+                  "Forgot Password",
+                  style: TextStyle(decoration: TextDecoration.underline),
                 ),
-                Text("Remember me"),
-                Spacer(),
-                GestureDetector(
-                  onTap: () =>
-                      Navigator.pushNamed(
-                          context, Routes.forget_password),
-                  child: Text(
-                    "Forgot Password",
-                    style: TextStyle(decoration: TextDecoration.underline),
-                  ),
-                )
-          ],
-        ),
-        FormError(errors: errors),
-        SizedBox(height: getProportionateScreenHeight(20)),
-        DefaultButton(
+              )
+            ],
+          ),
+          FormError(errors: errors),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          DefaultButton(
             text: "Continue",
             press: () async {
               if (_formKey.currentState!.validate()) {
                 //  _formKey.currentState!.save();
+                String s=codeController.text;
+                print('code:$s');
                 signIn(emailController.text, passwordController.text)
                     .then((uid) =>
                 {
@@ -116,6 +119,7 @@ class _SignFormState extends State<SignForm> {
                         builder: (context) =>
                             UserInfoPage(
                               user: FirebaseAuth.instance.currentUser as User,
+                              orgCode: s,
                             ),
                       ),
                     )
@@ -152,10 +156,42 @@ class _SignFormState extends State<SignForm> {
               //  Navigator.pushNamed(context, Routes.home);
 
             },)
-    ,]
-    ,
-    )
-    ,
+          ,]
+        ,
+      )
+      ,
+    );
+  }
+  TextFormField buildCodeFormField() {
+    return TextFormField(
+
+      controller: codeController,
+      onSaved: (newValue) => code = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.length >= 8) {
+          removeError(error: kShortPassError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        } else if (value.length < 8) {
+          addError(error: kShortPassError);
+          return "";
+        }
+        return null;
+      },
+      // textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+        labelText: "Organisation Code",
+        hintText: "Enter your Organisation Code",
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+      ),
     );
   }
 
@@ -182,7 +218,7 @@ class _SignFormState extends State<SignForm> {
         }
         return null;
       },
-     // textInputAction: TextInputAction.done,
+      // textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
@@ -225,7 +261,7 @@ class _SignFormState extends State<SignForm> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
-   //   textInputAction: TextInputAction.next,
+      //   textInputAction: TextInputAction.next,
       // onEditingComplete: () => node.nextFocus(),
     );
   }
@@ -234,7 +270,7 @@ class _SignFormState extends State<SignForm> {
   Future<UserCredential?> signIn(final String email,
       final String password) async {
     UserCredential? userCredential;
-   // await Firebase.initializeApp();
+    // await Firebase.initializeApp();
     Authentication.initializeFirebase(context: context);
     //final UserCredential userCredential;
     try {
@@ -282,5 +318,7 @@ class _SignFormState extends State<SignForm> {
     // emailController.removeListener(onChange);
     super.dispose();
   }
+
+
 
 }

@@ -74,7 +74,7 @@ class _ChannelNamePage extends State<ChannelNamePage> {
               ? SystemUiOverlayStyle.light
               : SystemUiOverlayStyle.dark,
           elevation: 1,
-          leading: const StreamBackButton(),
+          leading:  StreamBackButton(),
           title: Text(
             'Name of Group Chat',
             style: TextStyle(

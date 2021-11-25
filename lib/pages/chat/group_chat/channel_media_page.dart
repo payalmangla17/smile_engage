@@ -4,11 +4,11 @@ import 'package:smile_engage/config/constants.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:video_player/video_player.dart';
 
-/*
-This page renders the media Files in a grid form and integrates the BusinessLogic
-with the widgets for the media shared in a channel
-powered by Stream Chat SDK.
-*/
+
+///This page renders the media Files in a grid form and integrates the BusinessLogic
+///with the widgets for the media shared in a channel
+///powered by Stream Chat SDK.
+
 
 class ChannelMediaPage extends StatefulWidget {
   final List<SortOption>? sortOptions;
@@ -41,9 +41,8 @@ class _ChannelMediaPageState extends State<ChannelMediaPage> {
     super.initState();
     final messageSearchBloc = MessageSearchBloc.of(context);
     messageSearchBloc.search(
-      /*
-      Filters the media attachments with cid
-      * */
+
+      ///Filters the media attachments with cid
       filter: Filter.in_(
         'cid',
         [StreamChannel.of(context).channel.cid!],
