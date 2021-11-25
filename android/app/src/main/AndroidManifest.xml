@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
    <application
-        android:label="smile_engage"
-        android:icon="@mipmap/ic_launcher"
+        android:label="Smile Engage"
+        android:icon="@mipmap/logo"
         android:requestLegacyExternalStorage="true"
         tools:replace="android:label">
         <activity
