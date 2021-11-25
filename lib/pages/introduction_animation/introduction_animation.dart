@@ -1,15 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:smile_engage/config/constants.dart';
 import 'package:smile_engage/config/size_config.dart';
 import 'package:smile_engage/pages/introduction_animation/components/splash_view.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
-
-
-import 'components/care_view.dart';
+import 'components/collabarate.dart';
 import 'components/center_next_button.dart';
-import 'components/mood_dairy_view.dart';
-import 'components/relax_view.dart';
+import 'components/sync_up.dart';
+import 'components/share_view.dart';
 import 'components/top_back_skip_view.dart';
 import 'components/welcome_view.dart';
 
@@ -52,13 +49,13 @@ class _IntroductionAnimationScreenState
             SplashView(
               animationController: _animationController!,
             ),
-            RelaxView(
+            ShareView(
               animationController: _animationController!,
             ),
-            CareView(
+            Collabarate(
               animationController: _animationController!,
             ),
-            MoodDiaryVew(
+            SyncUp(
               animationController: _animationController!,
             ),
             WelcomeView(
@@ -121,7 +118,6 @@ class _IntroductionAnimationScreenState
 
   void _signUpClick() {
     Navigator.pop(context);
-  //  Navigator.pushNamed(context, Routes.register);
     Navigator.pushNamed(context, Routes.user_type);
   }
 }

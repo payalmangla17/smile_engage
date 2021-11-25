@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MoodDiaryVew extends StatelessWidget {
+class SyncUp extends StatelessWidget {
   final AnimationController animationController;
 
-  const MoodDiaryVew({Key? key, required this.animationController})
+  const SyncUp({Key? key, required this.animationController})
       : super(key: key);
 
   @override
