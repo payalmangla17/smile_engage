@@ -31,6 +31,38 @@ It implements the following features for an organisation:
     Easily locate shared files, media in real time.
     
 ## Download Apk
+## Features
+### Grouping
+Each school or organisation will have a unique code and all the members will register with that code for that school/company. Every member in that school/organisation can communicate through chat/video functionality with other members of that group only.
+
+### Chat Functionality
+- Upto 2000 Active users at same time
+- Create Group / personal chats outside a meeting
+- Pin messages.
+- Delete / edit messages.
+- Photo, Audio, Videos, etc.
+- GIFs via GIPHY
+- Chat reactions & Emojis.
+- Reply on threads.
+- Integrated Video rooms.
+- User mentions.
+- Mute Conversations
+
+### Video Conferencing Functionality
+- Toggle Video / Audio
+- Share Screen
+- Anonymous Join In
+- Raise Hand
+- Set Meeting Password
+- Share files
+- In meet private chat
+- Record the meeting
+- Share Links
+- Minimised mode
+
+### UI
+Fully responsive UI
+
 ## Getting Started
 #### Project Setup
 Please refer to the following [guide](https://github.com/payalmangla17/smile_engage/wiki) for **_project setup_**.
@@ -56,6 +88,7 @@ Please refer to [this](https://github.com/payalmangla17/smile_engage/wiki/Contri
     - [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)
 - Jitsi Meet SDK for video meetings & conferences
     - [Jitsi Meet](https://pub.dev/packages/jitsi_meet)
+- Other dependencies in ```pubspec.yaml```
 
 ## App Permissions
 - Internet
