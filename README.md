@@ -31,6 +31,8 @@ It implements the following features for an organisation:
     Easily locate shared files, media in real time.
     
 ## Download Apk
+### Architecture specific APK
+[Download] (https://github.com/payalmangla17/smile_engage/tree/master/apk)
 ## Features
 ### Grouping
 Each school or organisation will have a unique code and all the members will register with that code for that school/company. Every member in that school/organisation can communicate through chat/video functionality with other members of that group only.
