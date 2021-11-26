@@ -23,11 +23,11 @@ A mobile application to collaborate with team for schools and organisations.
 
 Smile Engage is a video conferencing appliaction with rich integrated chat feature where teams can discuss on topics and connect with other members.
 It implements the following features for an organisation:
-  - Instant Messaging
+  - Instant Messaging:
     Communicate with your team and have shared resources in an organised manner. Send GIF's, emojis, files, media in one to one or group chat.
-  - Online Meetings
+  - Online Meetings:
     Connect with your team mates easily by just clicking a button in the chat window.
-  - Collaborate
+  - Collaborate:
     Easily locate shared files, media in real time.
     
 ## Download Apk
@@ -42,12 +42,35 @@ Please refer to following [wiki](https://github.com/payalmangla17/smile_engage/w
 ### Contribution
 
 ## Technologies Used
+- [Flutter](https://flutter.dev/)
+- Google Firebase for authentication and storage
+    - [firebase_core](https://pub.dev/packages/firebase_core)
+    - [firebase_auth](https://pub.dev/packages/firebase_auth)
+    - [firebase_realtime_database](https://pub.dev/packages/firebase_database)
+- Stream Chat SDK for Chat functionality
+    - [stream_chat_flutter](https://pub.dev/packages/stream_chat_flutter)
+    - [stream_chat_flutter_core](https://pub.dev/packages/stream_chat_flutter_core)
+    - [stream_chat_persistence](https://pub.dev/packages/stream_chat_persistence)
+    - [streaming_shared_preferences](https://pub.dev/packages/streaming_shared_preferences)
+    - [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage)
+- Jitsi Meet SDK for video meetings & conferences
+    - [Jitsi Meet](https://pub.dev/packages/jitsi_meet)
 
 ## App Permissions
+- Internet
+- Camera
+- Microphone
+- Storage
 
 ## Demo & Screenshots
 
 ## Project References
+- [Flutter API](https://api.flutter.dev/index.html)
+- [Stream Chat API Docs](https://getstream.io/chat/docs/flutter-dart/)
+- [Pub.dev Api Reference](https://pub.dev/)
+- [Jitsi Meet](https://pub.dev/packages/jitsi_meet)
+- [Flutter Examples](https://github.com/GetStream/flutter-samples)
+- [Undraw](https://undraw.co/) for using the images for UI
 
 ## License
 
