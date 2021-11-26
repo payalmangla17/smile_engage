@@ -40,6 +40,7 @@ Please refer to following [wiki](https://github.com/payalmangla17/smile_engage/w
 ## Development
 ### Overview of Codebase
 ### Contribution
+Please refer to [this](https://github.com/payalmangla17/smile_engage/wiki/Contribute) page for contribution.
 
 ## Technologies Used
 - [Flutter](https://flutter.dev/)
