@@ -18,7 +18,8 @@ import 'package:smile_engage/routes/ui_routes.dart';
 class SignUpForm extends StatefulWidget {
   final int isAdmin;
   final String code;
-  SignUpForm(this.isAdmin, this.code);
+  final String orgName;
+  SignUpForm(this.isAdmin, this.code, this.orgName);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -43,6 +44,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final List<String?> errors = [];
   bool isAdmin=false;
   String code="";
+  String orgName="";
   String _errorMessage = '';
   //
   late RegisterModel userModel;
@@ -65,6 +67,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     isAdmin=widget.isAdmin==0?true:false;
     code=widget.code;
+    orgName=widget.orgName;
     return Form(
       key: _formKey,
       child: Column(
@@ -163,8 +166,6 @@ class _SignUpFormState extends State<SignUpForm> {
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
       ),
@@ -210,7 +211,7 @@ class _SignUpFormState extends State<SignUpForm> {
    // final routeArgs =
    // ModalRoute.of(context).settings.arguments as Map<String, int>;
 
-    userModel=RegisterModel(email: emailTextEditController.text, password: passwordController.text, isAdmin: isAdmin, orgCode: code);
+    userModel=RegisterModel(email: emailTextEditController.text, password: passwordController.text, isAdmin: isAdmin, orgCode: code,orgName: orgName);
 
       Navigator.pushNamed(context, Routes.complete_profile_screen,arguments: userModel);
 

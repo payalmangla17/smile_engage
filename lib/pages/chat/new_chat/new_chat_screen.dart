@@ -69,51 +69,7 @@ class _NewChatPageState extends State<NewChatPage> {
       }
     });
   }
-  // void createChannel(){
-  //   _messageInputFocusNode.addListener(() async {
-  //     if (_messageInputFocusNode.hasFocus && _selectedUsers.isNotEmpty) {
-  //       final chatState = StreamChat.of(context);
-  //
-  //       final res = await chatState.client.queryChannelsOnline(
-  //         state: false,
-  //         watch: false,
-  //         filter: Filter.raw(value: {
-  //           'members': [
-  //             ..._selectedUsers.map((e) => e.id),
-  //             chatState.currentUser!.id,
-  //           ],
-  //           'distinct': true,
-  //         }),
-  //         messageLimit: 0,
-  //         paginationParams: PaginationParams(
-  //           limit: 1,
-  //         ),
-  //       );
-  //
-  //       final _channelExisted = res.length == 1;
-  //       if (_channelExisted) {
-  //         channel = res.first;
-  //         await channel!.watch();
-  //       } else {
-  //         channel = chatState.client.channel(
-  //           'messaging',
-  //           extraData: {
-  //             'members': [
-  //               ..._selectedUsers.map((e) => e.id),
-  //               chatState.currentUser!.id,
-  //             ],
-  //           },
-  //         );
-  //         await channel!.create();
-  //       }
-  //
-  //       setState(() {
-  //         _showUserList = false;
-  //       });
-  //     }
-  //   });
-  //
-  // }
+
   @override
   void initState() {
     super.initState();
@@ -415,10 +371,10 @@ class _NewChatPageState extends State<NewChatPage> {
 
                     onMessageSent: (m) async {
 
-                      Navigator.pushNamedAndRemoveUntil(
+                      Navigator.pushNamed(
                         context,
                         Routes.channel_page,
-                        ModalRoute.withName(Routes.home),
+                        //ModalRoute.withName(Routes.home),
                         arguments: ChannelPageArgs(channel: channel),
                       );
                     },

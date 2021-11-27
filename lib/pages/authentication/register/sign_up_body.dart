@@ -9,7 +9,8 @@ import 'sign_up_form.dart';
 class SignUpBody extends StatelessWidget {
   final int isAdmin;
   final String code;
-  SignUpBody(this.isAdmin, this.code);
+  final String orgName;
+  SignUpBody(this.isAdmin, this.code, this.orgName);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class SignUpBody extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                  SignUpForm(isAdmin,code),
+                  SignUpForm(isAdmin,code,orgName),
                   // FutureBuilder(
                   //     future: Authentication.initializeFirebase(context: context),
                   //     builder: (context, snapshot) {

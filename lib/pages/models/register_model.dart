@@ -3,5 +3,6 @@ class RegisterModel{
   String password;
   bool isAdmin;
   String orgCode;
-  RegisterModel({required this.email,required this.password,required this.isAdmin, required this.orgCode});
+  String orgName;
+  RegisterModel({required this.email,required this.password,required this.isAdmin, required this.orgCode, required this.orgName});
 }
