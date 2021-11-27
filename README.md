@@ -73,6 +73,9 @@ Please refer to following [wiki](https://github.com/payalmangla17/smile_engage/w
 
 ## Development
 ### Overview of Codebase
+![image](https://user-images.githubusercontent.com/43950455/143718582-adbe3d65-e6cb-4fa2-ace8-025314e5ae04.png)
+For more details, please refer [here](https://github.com/payalmangla17/smile_engage/wiki/Codebase-Overview).
+
 ### Contribution
 Please refer to [this](https://github.com/payalmangla17/smile_engage/wiki/Contribute) page for contribution.
 
