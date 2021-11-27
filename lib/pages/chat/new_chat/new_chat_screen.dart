@@ -307,7 +307,7 @@ class _NewChatPageState extends State<NewChatPage> {
                           filter: Filter.and([
                             if (_userNameQuery.isNotEmpty)
                               Filter.autoComplete('name', _userNameQuery),
-                            Filter.equal('orgCode', StreamChat.of(context).currentUser!.extraData['orgCode'] as Object),
+                            Filter.equal('orgCode', globals.organisationCode),
                             Filter.notEqual(
                                 'id', StreamChat.of(context).currentUser!.id),
                           ]),
