@@ -12,6 +12,7 @@ import 'package:smile_engage/pages/models/register_model.dart';
 import 'package:smile_engage/pages/ui/default_button.dart';
 import 'package:smile_engage/pages/ui/keyboard.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 
 class CompleteProfileForm extends StatefulWidget {
@@ -195,11 +196,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "First Name",
         hintText: "Enter your first name",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
@@ -224,18 +223,33 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   }
 
   Future<void> completeProfile() async {
+    if(currUser.isAdmin) {
+      FirebaseDatabase.instance.reference().child('orgCode').push().set({
+      currUser.orgName: currUser.orgCode
+    });
+    }
+
     UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(
           email: currUser.email,
           password: currUser.password,
           );
+
     String uid=userCredential.user!.uid;
+    final prefs = await StreamingSharedPreferences.instance;
+    var _eid = userCredential.user!.email!.length > 7
+        ? userCredential.user!.email!.substring(0, 7)
+        : userCredential.user!.uid.substring(0, 7);
+    prefs.setString(_eid, currUser.orgCode);
     //final User? user=userCredential.user;
     print(fNameController.text+" "+sNameController.text);
 
     userCredential.user!.updateDisplayName(fNameController.text+" "+sNameController.text);
     //userCredential.user!.updatePhoneNumber(mobilePhoneController.text );
     await userCredential.user!.reload();
+    final sp = await StreamingSharedPreferences.instance;
+    sp.setString('Group', currUser.orgCode);
+    sp.setString('GroupName', currUser.orgName);
     dbRef.child(currUser.orgCode).child("users").push().set({
       "email": currUser.email,
       "password":currUser.password,
@@ -247,6 +261,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       "orgCode": currUser.orgCode,
 
     }
+
 
     ).then((user) => {
       if (uid != null) {

@@ -14,12 +14,14 @@ import 'package:smile_engage/routes/app_routes.dart';
 import 'package:smile_engage/routes/ui_routes.dart';
 import 'package:smile_engage/services/stream_chat/stream_chat_api.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import '../../services/authentication/authentication.dart';
 
 // To be written by flutter secure storage for persistence
 const kStreamApiKey = 'STREAM_API_KEY';
 const kStreamUserId = 'STREAM_USER_ID';
 const kStreamToken = 'STREAM_TOKEN';
+const kGroupCode='GROUP_CODE';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key? key, required Firebase.User user, required this.orgCode})
@@ -190,10 +192,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       key: kStreamApiKey,
                       value: StreamApi.kDefaultStreamApiKey,
                     );
-                    // secureStorage.write(
-                    //   key: globals.organisationCode,
-                    //   value: orgCode,
-                    // );
+                    secureStorage.write(
+                      key: kGroupCode,
+                      value: orgCode,
+                    );
+
                     secureStorage.write(
                       key: kStreamUserId,
                       value: _eid,

@@ -13,7 +13,8 @@ class RegisterPageArgs{
 class RegisterPage extends StatelessWidget {
   final int isAdmin;
   final String orgCode;
-  const RegisterPage({Key? key, required this.isAdmin,  required this.orgCode}) : super(key: key);
+  final String orgName;
+  const RegisterPage({Key? key, required this.isAdmin,  required this.orgCode, required this.orgName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class RegisterPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Sign Up"),
       ),
-      body: SignUpBody(isAdmin,orgCode),
+      body: SignUpBody(isAdmin,orgCode,orgName),
     );
   }
 }

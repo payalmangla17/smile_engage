@@ -259,7 +259,7 @@ class _AddChannelMembersPageState extends State<AddChannelMembersPage> {
                     filter: Filter.and([
                       if (_userNameQuery.isNotEmpty)
                         Filter.autoComplete('name', _userNameQuery),
-                      Filter.equal('orgCode', globals.organisationCode),
+                      Filter.equal('orgCode', StreamChat.of(context).currentUser!.extraData['orgCode'] as Object),
                       Filter.notEqual('id', StreamChat.of(context).currentUser!.id),
                     ]),
                     sort: [

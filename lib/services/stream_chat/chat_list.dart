@@ -166,7 +166,7 @@ class _ChannelList extends State<ChannelList> {
                   swipeToAction: true,
                   filter: Filter.in_('members', [user!.id]),
                   presence: true,
-                  limit: 20,//todo --check it running
+                  limit: 20,
                   channelWidget: const ChannelPage(),
                   onViewInfoTap: (channel) {
                     Navigator.pop(context);

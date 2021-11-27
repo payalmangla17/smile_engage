@@ -50,7 +50,7 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
             StreamSvgIcon.message(
               color: _isSelected(1) ? appAccentColor : Colors.grey,
             ),
-            Positioned(
+            const Positioned(
               top: -3,
               right: -16,
               child: UnreadIndicator(),
@@ -77,9 +77,9 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
   @override
   Widget build(BuildContext context) {
     final user = StreamChat.of(context).currentUser;
-    print(user);
+    //print(user);
     if (user == null) {
-      return Offstage();
+      return const Offstage();
     }
     return Scaffold(
       //scaffold for search box
@@ -133,8 +133,8 @@ class _ChatsHomePageState extends State<ChatsHomePage> {
         // To map the indexes of Pages with Bottom Navigation Bar icons
         index: _currentIndex,
         children: [
-          MeetingsPage(),
-          ChannelList(),
+          const MeetingsPage(),
+          const ChannelList(),
           UserMentionsPage(),
         ],
       ),

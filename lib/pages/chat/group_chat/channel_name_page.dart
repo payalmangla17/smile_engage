@@ -145,7 +145,7 @@ class _ChannelNamePage extends State<ChannelNamePage> {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           Routes.channel_page,
-                          ModalRoute.withName(Routes.home),
+                          ModalRoute.withName(Routes.channel_list_page),
                           arguments: ChannelPageArgs(channel: channel),
                         );
                       } catch (err) {
