@@ -32,8 +32,9 @@ It implements the following features for an organisation:
     
 ## Download APK
 ### FAT APK Bundle
+Download(https://drive.google.com/drive/u/0/folders/1LbjqF1UHXe67bLNWCjbCLCDpVGMLucPm)
 ### Architecture Specific APK's
-[Download](https://github.com/payalmangla17/smile_engage/tree/master/apk)
+[Download](https://drive.google.com/drive/u/0/folders/1TRFknPtzZ8io8vY-WpwdnZKSaXNkRMZf)
 Please refer [here](https://docs.flutter.dev/deployment/android#building-the-app-for-release) to know the difference.
 ## Features
 ### Grouping
