@@ -14,9 +14,9 @@ A mobile application to collaborate with team for schools and organisations.
     - [Contribution](https://github.com/payalmangla17/smile_engage/#contribution)
 - [Technologies Used](https://github.com/payalmangla17/smile_engage/#tech_used)
 - [App Permissions](https://github.com/payalmangla17/smile_engage/#permissions)
-- [Demo & Screenshots](https://github.com/payalmangla17/smile_engage/#demo)
+- [Screenshots](https://github.com/payalmangla17/smile_engage/#demo)
 - [Project References](https://github.com/payalmangla17/smile_engage/#references)
-- [License](https://github.com/payalmangla17/smile_engage/#license)
+- [Future enhancement](https://github.com/payalmangla17/smile_engage/#enhancement)
 - [Connect with me](https://github.com/payalmangla17/smile_engage/#profile)
 
 ## About
@@ -101,7 +101,8 @@ Please refer to [this](https://github.com/payalmangla17/smile_engage/wiki/Contri
 - Microphone
 - Storage
 
-## Demo & Screenshots
+## Screenshots
+[Screenshots](https://github.com/payalmangla17/smile_engage/tree/master/docs)
 
 ## Project References
 - [Flutter API](https://api.flutter.dev/index.html)
@@ -111,12 +112,10 @@ Please refer to [this](https://github.com/payalmangla17/smile_engage/wiki/Contri
 - [Flutter Examples](https://github.com/GetStream/flutter-samples)
 - [Undraw](https://undraw.co/) for using the images for UI
 
-## License
+## Future Enhancement
+- Integration of moderator
+- Sending calendar invites for the meeting
 
 ## Connect with me
 [![image](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/payal-mangla/) [![image](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/payalmangla17)
-
-
-
-  
 
