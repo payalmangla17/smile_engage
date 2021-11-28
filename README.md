@@ -31,14 +31,15 @@ It implements the following features for an organisation:
     Easily locate shared files, media in real time.
     
 ## Download APK
+### FAT APK Bundle
 ### Architecture Specific APK's
 [Download](https://github.com/payalmangla17/smile_engage/tree/master/apk)
+Please refer [here](https://docs.flutter.dev/deployment/android#building-the-app-for-release) to know the difference.
 ## Features
 ### Grouping
 Each school or organisation will have a unique code and all the members will register with that code for that school/company. Every member in that school/organisation can communicate through chat/video functionality with other members of that group only.
 
 ### Chat Functionality
-- Upto 2000 Active users at same time
 - Create Group / personal chats outside a meeting
 - Pin messages.
 - Delete / edit messages.
